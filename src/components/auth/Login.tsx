@@ -2,16 +2,41 @@
 import Link from "next/link";
 import Inputs from "./Inputs";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { ColorRing } from "react-loader-spinner";
+import { useState } from "react";
 
 const Login = () => {
+  const router = useRouter();
+  const [loadin, setLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({ defaultValues: { email: "", password: "" } });
 
   const onSubmitHandler = (data: any) => {
-    console.log(data);
+    setLoading(true);
+
+    signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    }).then((cb) => {
+      if (cb?.ok) {
+        setLoading(false);
+        router.push("/");
+
+        router.refresh();
+        toast.success("Login Success");
+      }
+      if (cb?.error) {
+        setLoading(false);
+        toast.error(cb.error);
+      }
+    });
   };
   return (
     <div className="h-[calc(100vh-64px)] flex justify-center items-center ">
@@ -20,14 +45,14 @@ const Login = () => {
           <h1 className="font-semibold text-3xl">SignIn Now</h1>
         </div>
         <Inputs
-          label="UserName"
-          type="text"
+          label="Email"
+          type="email"
           required
-          id="userName"
+          id="email"
           errors={errors}
           register={register}
-          message="UserName is required"
-          placeholder="Type your UserName"
+          message="email is required"
+          placeholder="Type your email"
         />{" "}
         <Inputs
           label="Password"
@@ -38,19 +63,30 @@ const Login = () => {
           register={register}
           message="password is required"
           placeholder="Type your password"
-          minLength={6}
         />
         <div className="text-start">
           <button
             className="bg-teal-700 text-white px-4 py-2 rounded-md hover:text-slate-400"
             onClick={handleSubmit(onSubmitHandler)}
           >
-            Submit
+            {loadin ? (
+              <ColorRing
+                visible={true}
+                height="25"
+                width="60"
+                ariaLabel="color-ring-loading"
+                wrapperStyle={{}}
+                wrapperClass="color-ring-wrapper"
+                colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+              />
+            ) : (
+              "Submit"
+            )}
           </button>
         </div>
         <div className="text-center">
           <p>
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/auth/signup">
               <span className="font-semibold">SignUp Now</span>
             </Link>

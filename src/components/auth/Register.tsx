@@ -2,18 +2,55 @@
 import Link from "next/link";
 import Inputs from "./Inputs";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { ColorRing } from "react-loader-spinner";
+import { DropzoneState, useDropzone } from "react-dropzone";
+import { useCallback, useState } from "react";
+import { Plus } from "lucide-react";
 
 const Register = () => {
+  const router = useRouter();
+  const [file, setFile] = useState<any>("");
+
+  const onDrop = useCallback((acceptedFiles: any) => {
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+    }
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setError,
+    reset,
+
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: { userName: "", email: "", password: "", image: "" },
   });
 
-  const onSubmitHandler = (data: any) => {
-    console.log(data);
+  const onSubmitHandler = async (data: any) => {
+    try {
+      await axios.post("/api/auth/register", data);
+
+      toast.success("Create user successful");
+      router.push("/auth/signin");
+    } catch (err: any) {
+      if (err.response.data.email) {
+        setError("email", { message: err.response.data.email });
+      } else if (err.response.data.password) {
+        setError("password", { message: err.response.data.password });
+      } else {
+        setError("root.serverError", { message: err.response.data.message });
+      }
+    }
+  };
+
+  const onCancelHandler = () => {
+    setFile(null);
   };
   return (
     <div className="h-[calc(100vh-64px)] flex justify-center items-center ">
@@ -22,7 +59,7 @@ const Register = () => {
           <h1 className="font-semibold text-2xl">SignUp Now</h1>
         </div>
         <Inputs
-          label="UserName"
+          label="UserName*"
           type="text"
           required
           id="userName"
@@ -32,7 +69,7 @@ const Register = () => {
           placeholder="Type your UserName"
         />{" "}
         <Inputs
-          label="Email"
+          label="Email*"
           type="email"
           required
           id="email"
@@ -42,7 +79,7 @@ const Register = () => {
           placeholder="Type your email"
         />
         <Inputs
-          label="Password"
+          label="Password*"
           type="password"
           required
           id="password"
@@ -52,25 +89,76 @@ const Register = () => {
           placeholder="Type your password"
           minLength={6}
         />
-        <Inputs
-          label="Profile Image"
-          type="file"
-          required={false}
-          id="image"
-          errors={errors}
-          register={register}
-        />
+        <div className="">
+          <label className="font-semibold">Profile Picture</label>
+          <div
+            {...getRootProps()}
+            className="border-2 mt-1 border-slate-400 py-2 px-8 w-fit border-dashed cursor-pointer text-sm text-slate-400 flex items-center"
+          >
+            {!file && (
+              <>
+                <input
+                  {...getInputProps()}
+                  type="file"
+                  name="image"
+                  id="image"
+                />
+                {isDragActive ? (
+                  <p>Drop Here..... </p>
+                ) : (
+                  <p className="flex items-center gap-2">
+                    <Plus /> <span>Drop your profile pic here</span>
+                  </p>
+                )}
+              </>
+            )}
+            <>
+              {file && (
+                <div className="flex flex-row items-center gap-4 text-sm col-span-2">
+                  <p>{file?.name}</p>
+                  <div className="w-[70px]">
+                    <button
+                      className="bg-teal-700 text-white px-6 py-1 rounded-md"
+                      onClick={onCancelHandler}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          </div>
+        </div>
         <div className="text-start">
           <button
             className="bg-teal-700 text-white px-4 py-2 rounded-md hover:text-slate-400"
             onClick={handleSubmit(onSubmitHandler)}
           >
-            Submit
+            {isSubmitting ? (
+              <ColorRing
+                visible={true}
+                height="25"
+                width="60"
+                ariaLabel="color-ring-loading"
+                wrapperStyle={{}}
+                wrapperClass="color-ring-wrapper"
+                colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+              />
+            ) : (
+              "Submit"
+            )}
           </button>
         </div>
+        {errors?.root?.serverError?.message && (
+          <div>
+            <p className="text-rose-800">
+              {errors?.root?.serverError?.message}
+            </p>
+          </div>
+        )}
         <div className="text-center">
           <p>
-            Already have an account?{" "}
+            Already have an account?
             <Link href="/auth/signin">
               <span className="font-semibold">SignIn</span>
             </Link>

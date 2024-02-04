@@ -1,6 +1,6 @@
 "use client";
 import { FaFacebookMessenger } from "react-icons/fa";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Tooltip,
   TooltipContent,
@@ -16,9 +16,20 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import Avatar from "@mui/material/Avatar";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const NavbarIcon = () => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const logoutHandler = async () => {
+    const data = await signOut({ redirect: false, callbackUrl: "/" });
+    router.push(data.url);
+  };
+  console.log(session);
+
   return (
     <div className="flex justify-end mlg:flex-1 w-36  gap-2  items-center">
       <TooltipProvider>
@@ -37,23 +48,44 @@ const NavbarIcon = () => {
       <Menubar>
         <MenubarMenu>
           <MenubarTrigger>
-            <Avatar>
-              <AvatarImage src="" />
-              <AvatarFallback className="cursor-pointer">CN</AvatarFallback>
-            </Avatar>
+            <Avatar
+              alt={session?.user?.name || ""}
+              src={session?.user?.image !== null ? session?.user?.image : ""}
+            />
           </MenubarTrigger>
           <MenubarContent>
-            <Link href="/auth/signin">
-              <MenubarItem>Login</MenubarItem>
-            </Link>
-            <MenubarSeparator />
-            <Link href="/auth/signup">
-              <MenubarItem>Signup</MenubarItem>
-            </Link>
-            <MenubarSeparator />
-            <MenubarItem>Share</MenubarItem>
-            <MenubarSeparator />
-            <MenubarItem>Print</MenubarItem>
+            {status === "unauthenticated" && (
+              <>
+                <MenubarSeparator />
+                <Link href="/auth/signup">
+                  <MenubarItem>Signup</MenubarItem>
+                </Link>
+              </>
+            )}
+            {status === "authenticated" && (
+              <>
+                <MenubarSeparator />
+                <Link href="/user/profile">
+                  <MenubarItem>Profile</MenubarItem>
+                </Link>
+              </>
+            )}
+            {status === "authenticated" && (
+              <>
+                <MenubarSeparator />
+                <Link href="/messenger">
+                  <MenubarItem>Messenger</MenubarItem>
+                </Link>
+              </>
+            )}{" "}
+            {status === "authenticated" && (
+              <>
+                <MenubarSeparator />
+                <Link onClick={logoutHandler} href="/messenger">
+                  <MenubarItem>LogOut</MenubarItem>
+                </Link>
+              </>
+            )}
           </MenubarContent>
         </MenubarMenu>
       </Menubar>

@@ -16,6 +16,9 @@ import NavbarIcon from "./NavbarIcon";
 import Link from "next/link";
 
 const Navbar = () => {
+  
+
+
   const [open, setOpen] = useState(false);
   return (
     <header className="bg-white sticky top-0 h-16 w-full shadow-md shadow-slate-300 z-50 ">
