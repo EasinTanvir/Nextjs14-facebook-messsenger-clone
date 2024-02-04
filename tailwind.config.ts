@@ -18,6 +18,7 @@ const config = {
       lg: "1024px",
       xl: "1280px",
     },
+
     container: {
       center: true,
       padding: "2rem",
@@ -27,6 +28,7 @@ const config = {
     },
     extend: {
       colors: {
+        boxColor: "#E4E6E9",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

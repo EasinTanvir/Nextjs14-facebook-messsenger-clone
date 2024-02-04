@@ -16,6 +16,7 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import Link from "next/link";
 
 const NavbarIcon = () => {
   return (
@@ -42,7 +43,13 @@ const NavbarIcon = () => {
             </Avatar>
           </MenubarTrigger>
           <MenubarContent>
-            <MenubarItem>New Window</MenubarItem>
+            <Link href="/auth/signin">
+              <MenubarItem>Login</MenubarItem>
+            </Link>
+            <MenubarSeparator />
+            <Link href="/auth/signup">
+              <MenubarItem>Signup</MenubarItem>
+            </Link>
             <MenubarSeparator />
             <MenubarItem>Share</MenubarItem>
             <MenubarSeparator />

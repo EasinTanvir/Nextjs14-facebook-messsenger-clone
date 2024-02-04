@@ -6,7 +6,7 @@ import { FaComment } from "react-icons/fa";
 import UpdatePost from "./UpdatePost";
 const Card = () => {
   return (
-    <div className="min-h-[450px] max-w-[600px] flex flex-col p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
+    <div className="min-h-[450px] sm:max-w-[600px] max-w-[400px] flex flex-col p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
       <div className=" flex items-center gap-2">
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
@@ -17,7 +17,7 @@ const Card = () => {
           <span className="text-sm">3 hours ago</span>
         </div>
       </div>
-      <div className="relative w-full  h-[450px] my-3">
+      <div className="relative w-full sm:h-[450px] h-[250px] my-3">
         <Image
           className="object-cover"
           src="https://github.com/shadcn.png"
