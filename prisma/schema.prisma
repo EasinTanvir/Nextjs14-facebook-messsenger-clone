@@ -41,14 +41,45 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
   userName      String
-  email         String    @unique
+  email         String     @unique
   password      String
-  emailVerified DateTime? @map("email_verified")
+  emailVerified DateTime?  @map("email_verified")
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Posts         Posts[]
+  Like          Like[]
+  Comments      Comments[]
 
   @@map("users")
+}
+
+model Posts {
+  id      String     @id @default(auto()) @map("_id") @db.ObjectId
+  caption String?
+  image   String?
+  time    DateTime   @default(now())
+  postId  String     @db.ObjectId
+  like    Like[]
+  comment Comments[]
+  user    User       @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+model Like {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  Posts   Posts?  @relation(fields: [id], references: [id])
+  User    User?   @relation(fields: [userId], references: [id])
+  postsId String? @db.ObjectId
+  userId  String? @db.ObjectId
+}
+
+model Comments {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  comment String
+  User    User?   @relation(fields: [userId], references: [id])
+  Posts   Posts?  @relation(fields: [postsId], references: [id])
+  postsId String? @db.ObjectId
+  userId  String? @db.ObjectId
 }

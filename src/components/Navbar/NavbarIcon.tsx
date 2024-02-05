@@ -22,11 +22,15 @@ import React from "react";
 const NavbarIcon = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
+
   const logoutHandler = async () => {
     const data = await signOut({ redirect: false, callbackUrl: "/" });
     router.push(data.url);
   };
-  console.log(session);
+
+  if (status === "loading") {
+    return null;
+  }
 
   return (
     <div className="flex justify-end mlg:flex-1 w-36  gap-2  items-center">

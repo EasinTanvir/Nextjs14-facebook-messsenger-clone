@@ -1,7 +1,10 @@
 "use client";
 import { IoMdPhotos } from "react-icons/io";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import AddNewPostModal from "./AddNewPostModal";
+import { useState } from "react";
 const NewPost = () => {
+  const [open, setOpen] = useState(false);
   return (
     <div className="min-h-[100px] sm:max-w-[600px] max-w-[400px] flex flex-col gap-4 p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
       <div className="flex items-center gap-5">
@@ -10,11 +13,12 @@ const NewPost = () => {
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="flex-1">
-          <input
-            type="text"
-            className="w-full py-2 rounded-md px-4 outline-none  shadow-lg shadow-slate-400"
-            placeholder="whats on your mind Easin?"
-          />
+          <button
+            onClick={() => setOpen(true)}
+            className="h-10 rounded-md text-start px-4 text-md bg-slate-300 w-full"
+          >
+            Whats on your mind ?
+          </button>
         </div>
       </div>
 
@@ -24,6 +28,7 @@ const NewPost = () => {
         </button>
         <span>Photos</span>
       </div>
+      <AddNewPostModal open={open} setOpen={setOpen} />
     </div>
   );
 };
