@@ -24,3 +24,9 @@ export const SideBarItems = [
   { id: 6, Icon: MdEmojiEvents, label: "Events" },
   { id: 6, Icon: MdOutlineFeed, label: "Feeds" },
 ];
+
+export const profileItems = [
+  { id: 1, label: "Signup", href: "/auth/signup" },
+  { id: 2, label: "Profile", href: "/user/profile" },
+  { id: 3, label: "Messenger", href: "/messenger" },
+];

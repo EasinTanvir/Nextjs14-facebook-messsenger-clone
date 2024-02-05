@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { IoMdMenu } from "react-icons/io";
 import { ListItesm } from "@/utils/listItem";
-import { FaFacebookMessenger } from "react-icons/fa";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { ImCross } from "react-icons/im";
 import {
   Tooltip,
@@ -16,9 +15,6 @@ import NavbarIcon from "./NavbarIcon";
 import Link from "next/link";
 
 const Navbar = () => {
-  
-
-
   const [open, setOpen] = useState(false);
   return (
     <header className="bg-white sticky top-0 h-16 w-full shadow-md shadow-slate-300 z-50 ">

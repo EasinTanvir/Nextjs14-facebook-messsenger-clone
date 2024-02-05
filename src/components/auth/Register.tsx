@@ -9,6 +9,9 @@ import { ColorRing } from "react-loader-spinner";
 import { DropzoneState, useDropzone } from "react-dropzone";
 import { useCallback, useState } from "react";
 import { Plus } from "lucide-react";
+import { firebaseStorage } from "@/utils/firebase";
+import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import firebaseUploadHandler from "@/utils/firebaseUploadHandler";
 
 const Register = () => {
   const router = useRouter();
@@ -33,6 +36,16 @@ const Register = () => {
   });
 
   const onSubmitHandler = async (data: any) => {
+    let profileUrl;
+    if (file) {
+      try {
+        profileUrl = await firebaseUploadHandler(file);
+        data.image = profileUrl;
+      } catch (err: any) {
+        setError("root.serverError", { message: err });
+      }
+    }
+
     try {
       await axios.post("/api/auth/register", data);
 

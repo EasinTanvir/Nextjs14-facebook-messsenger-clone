@@ -7,7 +7,8 @@ function validate(text: any) {
 }
 
 export async function POST(req: NextRequest) {
-  const { userName, email, password } = await req.json();
+  const { userName, email, password, image } = await req.json();
+  const images = image ? image : "";
 
   if (validate(userName) || validate(email) || validate(password)) {
     return NextResponse.json(
@@ -56,6 +57,7 @@ export async function POST(req: NextRequest) {
         userName,
         email,
         password: hashPass,
+        image: images,
       },
     });
     return NextResponse.json({ user }, { status: 201 });

@@ -1,12 +1,6 @@
 "use client";
 import { FaFacebookMessenger } from "react-icons/fa";
-import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 import {
   Menubar,
   MenubarContent,
@@ -17,9 +11,13 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import Avatar from "@mui/material/Avatar";
+import { IoIosLogIn } from "react-icons/io";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Button, Tooltip } from "@mui/material";
+import { profileItems } from "@/utils/listItem";
+import React from "react";
 
 const NavbarIcon = () => {
   const router = useRouter();
@@ -32,63 +30,53 @@ const NavbarIcon = () => {
 
   return (
     <div className="flex justify-end mlg:flex-1 w-36  gap-2  items-center">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger>
-            <li className="cursor-pointer w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
-              <FaFacebookMessenger size={27} />
-            </li>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Start Message With you Firiebds</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Tooltip title="Start Chat With your friends">
+        <li className="cursor-pointer w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
+          <FaFacebookMessenger size={27} />
+        </li>
+      </Tooltip>
 
-      <Menubar>
-        <MenubarMenu>
-          <MenubarTrigger>
-            <Avatar
-              alt={session?.user?.name || ""}
-              src={session?.user?.image !== null ? session?.user?.image : ""}
-            />
-          </MenubarTrigger>
-          <MenubarContent>
-            {status === "unauthenticated" && (
-              <>
-                <MenubarSeparator />
-                <Link href="/auth/signup">
-                  <MenubarItem>Signup</MenubarItem>
-                </Link>
-              </>
-            )}
-            {status === "authenticated" && (
-              <>
-                <MenubarSeparator />
-                <Link href="/user/profile">
-                  <MenubarItem>Profile</MenubarItem>
-                </Link>
-              </>
-            )}
-            {status === "authenticated" && (
-              <>
-                <MenubarSeparator />
-                <Link href="/messenger">
-                  <MenubarItem>Messenger</MenubarItem>
-                </Link>
-              </>
-            )}{" "}
-            {status === "authenticated" && (
+      {status === "unauthenticated" && (
+        <Tooltip title="Sign In to start Chat  with your friends">
+          <Button
+            onClick={() => router.push("/auth/signin")}
+            variant="outlined"
+            endIcon={<IoIosLogIn />}
+          >
+            SignIn
+          </Button>
+        </Tooltip>
+      )}
+
+      {status === "authenticated" && (
+        <Menubar>
+          <MenubarMenu>
+            <MenubarTrigger className="cursor-pointer">
+              <Avatar
+                alt={session?.user?.name || ""}
+                src={session?.user?.image !== null ? session?.user?.image : ""}
+              />
+            </MenubarTrigger>
+            <MenubarContent>
+              {profileItems.map((item) => (
+                <React.Fragment key={item.id}>
+                  <MenubarSeparator />
+                  <Link href={item.href}>
+                    <MenubarItem>{item.label}</MenubarItem>
+                  </Link>
+                </React.Fragment>
+              ))}
+
               <>
                 <MenubarSeparator />
                 <Link onClick={logoutHandler} href="/messenger">
                   <MenubarItem>LogOut</MenubarItem>
                 </Link>
               </>
-            )}
-          </MenubarContent>
-        </MenubarMenu>
-      </Menubar>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+      )}
     </div>
   );
 };
