@@ -28,10 +28,6 @@ const NavbarIcon = () => {
     router.push(data.url);
   };
 
-  if (status === "loading") {
-    return null;
-  }
-
   return (
     <div className="flex justify-end mlg:flex-1 w-36  gap-2  items-center">
       <Tooltip title="Start Chat With your friends">

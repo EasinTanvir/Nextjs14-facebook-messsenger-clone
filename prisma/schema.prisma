@@ -60,11 +60,17 @@ model Posts {
   id      String     @id @default(auto()) @map("_id") @db.ObjectId
   caption String?
   image   String?
+  mode    Visibility
   time    DateTime   @default(now())
   postId  String     @db.ObjectId
   like    Like[]
   comment Comments[]
   user    User       @relation(fields: [postId], references: [id], onDelete: Cascade)
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
 }
 
 model Like {

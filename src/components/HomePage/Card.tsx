@@ -35,6 +35,7 @@ const Card = () => {
           <span className="font-semibold">5</span>
         </div>
       </div>
+
       <UpdatePost />
     </div>
   );
