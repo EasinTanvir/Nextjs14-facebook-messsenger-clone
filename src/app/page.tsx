@@ -1,10 +1,15 @@
 import HomePage from "@/components/HomePage";
 import React from "react";
 
-const page = () => {
+import { fetchPost } from "../../actions/fetchPost";
+
+const page = async () => {
+  const posts = await fetchPost();
+  console.log(posts);
+
   return (
     <>
-      <HomePage />
+      <HomePage posts={posts} />
     </>
   );
 };

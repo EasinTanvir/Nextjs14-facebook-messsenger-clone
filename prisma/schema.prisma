@@ -62,10 +62,10 @@ model Posts {
   image   String?
   mode    Visibility
   time    DateTime   @default(now())
-  postId  String     @db.ObjectId
+  userId  String     @db.ObjectId
   like    Like[]
   comment Comments[]
-  user    User       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Visibility {

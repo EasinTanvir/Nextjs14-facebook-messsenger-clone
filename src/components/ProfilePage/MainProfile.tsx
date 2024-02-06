@@ -3,8 +3,11 @@ import React from "react";
 import { MdEdit } from "react-icons/md";
 import NewPost from "../HomePage/NewPost";
 import Card from "../HomePage/Card";
+import { getServerCredentials } from "../../../actions/sersverSession";
 
-const MainProfile = () => {
+const MainProfile = async ({ posts }: any) => {
+  const session = await getServerCredentials();
+
   return (
     <div className="flex-1 my-2">
       <div className="flex lg:flex-row justify-around flex-col gap-3 px-4 py-4   w-full">
@@ -26,7 +29,7 @@ const MainProfile = () => {
           <div>
             <h1>
               <span className="font-semibold "> Name : </span>
-              Easin
+              {session?.user?.name}
             </h1>
             <h1>
               <span className="font-semibold "> Email : </span>
@@ -46,8 +49,9 @@ const MainProfile = () => {
       </div>
       <div className="border flex flex-col gap-10 items-center flex-1 py-4">
         <NewPost />
-        <Card />
-        <Card />
+        {posts &&
+          posts.length > 0 &&
+          posts.map((item: any) => <Card key={item.id} {...item} />)}
       </div>
     </div>
   );

@@ -4,24 +4,31 @@ import Image from "next/image";
 import { BiSolidLike } from "react-icons/bi";
 import { FaComment } from "react-icons/fa";
 import UpdatePost from "./UpdatePost";
-const Card = () => {
+import { Posts } from "../../../types/post";
+import { getServerCredentials } from "../../../actions/sersverSession";
+import moment from "moment";
+const Card = async ({ id, caption, image, mode, time, userId, user }: any) => {
   return (
     <div className="min-h-[450px] sm:max-w-[600px] max-w-[400px] flex flex-col p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
       <div className=" flex items-center gap-2">
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={user?.image} alt="@shadcn" />
+          <AvatarFallback>{user?.userName}</AvatarFallback>
         </Avatar>
         <div className="-space-y-7">
-          <p className="font-bold">Easin</p>
-          <span className="text-sm">3 hours ago</span>
+          <p className="font-bold">{user?.userName}</p>
+          <span className="text-sm"> {moment(time).fromNow()} </span>
         </div>
       </div>
-      <div className="relative w-full sm:h-[450px] h-[250px] my-3">
+      <div className="mt-3">
+        <h3 className="">{caption}</h3>
+      </div>
+      <div className="relative w-full sm:h-[450px] h-[250px] my-1">
         <Image
+          priority
           className="object-cover"
-          src="https://github.com/shadcn.png"
-          alt="@shadcn"
+          src={image}
+          alt={caption}
           fill
         />
       </div>

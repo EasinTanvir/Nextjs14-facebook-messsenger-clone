@@ -3,9 +3,14 @@ import { ImCross } from "react-icons/im";
 import Modal from "@mui/material/Modal";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Textarea } from "../ui/textarea";
-import { DropzoneState, useDropzone } from "react-dropzone";
-import { CrossIcon, Plus } from "lucide-react";
+import { useDropzone } from "react-dropzone";
+import { Plus } from "lucide-react";
 import { Button } from "@mui/material";
+import { useFormState } from "react-dom";
+import { createPostAction } from "../../../serverAction/createPostAction";
+import SubmitButton from "./SubmitButton";
+import firebaseUploadHandler from "@/utils/firebaseUploadHandler";
+import toast from "react-hot-toast";
 const AddNewPostModal = ({
   open,
   setOpen,
@@ -15,6 +20,11 @@ const AddNewPostModal = ({
 }) => {
   const [file, setFile] = React.useState<any>("");
   const [imageUrl, setImageUrl] = React.useState("");
+  const [postImage, setoPostImage] = React.useState("");
+  const [postImageLoader, setoPostImageLoader] = React.useState(false);
+  console.log(file.name);
+  // @ts-expect-error
+  const [state, action] = useFormState(createPostAction, { message: null });
 
   const onDrop = React.useCallback((acceptedFiles: any) => {
     if (acceptedFiles.length > 0) {
@@ -23,6 +33,7 @@ const AddNewPostModal = ({
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    accept: { "image/*": [".jpeg", ".png", ".jpg"] },
   });
 
   const onCancelHandler = () => {
@@ -40,6 +51,27 @@ const AddNewPostModal = ({
     fileReader.readAsDataURL(file);
   }, [file]);
 
+  React.useEffect(() => {
+    if (!file) {
+      return;
+    }
+    async function uploadFile() {
+      setoPostImageLoader(true);
+      const profileUrl: any = await firebaseUploadHandler(file);
+      setoPostImage(profileUrl);
+      setoPostImageLoader(false);
+    }
+
+    uploadFile();
+  }, [file]);
+
+  React.useEffect(() => {
+    if (state.message !== null && state.message === "Success") {
+      setOpen(false);
+      toast.success("Create post Successfull");
+    }
+  }, [state]);
+
   return (
     <Modal
       open={open}
@@ -47,7 +79,10 @@ const AddNewPostModal = ({
       aria-describedby="modal-modal-description"
     >
       <div className="h-screen flex justify-center items-center">
-        <div className="sm:w-[590px] w-[380px] relative bg-white rounded-lg p-4 sm:h-[500px] shadow-lg shadow-slate-600">
+        <form
+          action={action}
+          className="sm:w-[590px] w-[380px] relative bg-white rounded-lg p-4 min-h-[500px] shadow-lg shadow-slate-600"
+        >
           <div className="absolute top-1 h-8 w-8  rounded-full bg-rose-700 right-1 flex justify-center items-center">
             <ImCross
               className="cursor-pointer text-white "
@@ -72,45 +107,50 @@ const AddNewPostModal = ({
                 </Avatar>
                 <div className="space-y-1">
                   <p className="font-bold">Easin</p>
-                  <select name="" id="">
-                    <option value="" key="">
+                  <select name="mode" id="">
+                    <option value="PUBLIC" key="">
                       Public
                     </option>
-                    <option value="" key="">
+                    <option value="PRIVATE" key="">
                       Private
                     </option>
                   </select>
                 </div>
               </div>
             </React.Fragment>
+            <input type="hidden" name="postimage" id="" value={postImage} />
 
             <React.Fragment>
               <div>
-                <Textarea placeholder="What's on your mind?" />
+                <Textarea name="caption" placeholder="What's on your mind?" />
               </div>
             </React.Fragment>
             <React.Fragment>
               <div className="h-[220px]  mt-2">
-                {!file ? (
+                {!file || postImageLoader ? (
                   <div
                     {...getRootProps()}
                     className="border-2 mt-1 border-slate-400 py-2 px-8 w-full h-full flex justify-center items-center border-dashed cursor-pointer text-sm text-slate-400 "
                   >
-                    <>
-                      <input
-                        {...getInputProps()}
-                        type="file"
-                        name="image"
-                        id="image"
-                      />
-                      {isDragActive ? (
-                        <p>Drop Here..... </p>
-                      ) : (
-                        <p className="flex items-center gap-2">
-                          <Plus /> <span>Drop your profile pic here</span>
-                        </p>
-                      )}
-                    </>
+                    {!postImageLoader ? (
+                      <>
+                        <input
+                          name="image"
+                          id="image"
+                          {...getInputProps()}
+                          type="file"
+                        />
+                        {isDragActive ? (
+                          <p>Drop Here..... </p>
+                        ) : (
+                          <p className="flex items-center gap-2">
+                            <Plus /> <span>Drop your profile pic here</span>
+                          </p>
+                        )}
+                      </>
+                    ) : (
+                      <p>Loading.....</p>
+                    )}
                   </div>
                 ) : (
                   <>
@@ -122,6 +162,7 @@ const AddNewPostModal = ({
 
                       <div className="absolute -top-10  right-0">
                         <button
+                          type="button"
                           className="text-white bg-teal-700 px-2 py-1 rounded-md"
                           onClick={onCancelHandler}
                         >
@@ -134,11 +175,10 @@ const AddNewPostModal = ({
               </div>
             </React.Fragment>
 
-            <div>
-              <Button variant="outlined">Publish</Button>
-            </div>
+            <SubmitButton />
           </div>
-        </div>
+          <p className="mt-2 text-rose-700">{state?.message}</p>
+        </form>
       </div>
     </Modal>
   );
