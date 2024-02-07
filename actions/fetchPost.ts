@@ -7,7 +7,9 @@ export const fetchPost = async () => {
       include: {
         user: true,
         like: true,
-        comment: true,
+        comment: {
+          include: { User: true },
+        },
       },
     });
 

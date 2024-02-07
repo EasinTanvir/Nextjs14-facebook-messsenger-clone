@@ -16,6 +16,7 @@ const Card = async ({
   userId,
   user,
   like,
+  comment,
 }: any) => {
   return (
     <div className="min-h-[450px] sm:max-w-[600px] max-w-[400px] flex flex-col p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
@@ -53,7 +54,7 @@ const Card = async ({
         </div>
       </div>
 
-      <UpdatePost id={id} like={like} />
+      <UpdatePost id={id} like={like} comment={comment} />
     </div>
   );
 };
