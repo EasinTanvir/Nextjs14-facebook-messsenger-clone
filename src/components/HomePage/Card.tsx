@@ -7,7 +7,16 @@ import UpdatePost from "./UpdatePost";
 import { Posts } from "../../../types/post";
 import { getServerCredentials } from "../../../actions/sersverSession";
 import moment from "moment";
-const Card = async ({ id, caption, image, mode, time, userId, user }: any) => {
+const Card = async ({
+  id,
+  caption,
+  image,
+  mode,
+  time,
+  userId,
+  user,
+  like,
+}: any) => {
   return (
     <div className="min-h-[450px] sm:max-w-[600px] max-w-[400px] flex flex-col p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
       <div className=" flex items-center gap-2">
@@ -35,7 +44,8 @@ const Card = async ({ id, caption, image, mode, time, userId, user }: any) => {
       <div className="h-10 border border-slate-200 w-full flex items-center justify-between">
         <div className="flex gap-2 items-center">
           <BiSolidLike />
-          <span className="font-semibold">10</span>
+
+          <span className="font-semibold">{like.length}</span>
         </div>
         <div className="flex gap-2 items-center">
           <FaComment />
@@ -43,7 +53,7 @@ const Card = async ({ id, caption, image, mode, time, userId, user }: any) => {
         </div>
       </div>
 
-      <UpdatePost />
+      <UpdatePost id={id} like={like} />
     </div>
   );
 };

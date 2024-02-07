@@ -2,14 +2,24 @@
 import { useState } from "react";
 
 import AddNewComment from "./AddNewComment";
-const UpdatePost = () => {
+import { useFormState } from "react-dom";
+import { createLikeAction } from "../../../serverAction/likePost";
+import LikeButton from "./LikeButton";
+const UpdatePost = ({ id, like }: { id: string; like: any }) => {
   const [openComment, setOpentComment] = useState(false);
+  // @ts-expect-error
+  const [state, action] = useFormState(createLikeAction, {
+    message: null,
+  });
+
   return (
     <>
-      <div className="flex justify-between items-end mt-4">
-        <div className="flex gap-2 items-center">
-          <button className="font-semibold cursor-pointer">Like</button>
-        </div>
+      <div className="flex justify-between items-end mt-3">
+        <form action={action}>
+          <input name="postId" type="hidden" value={id} />
+
+          <LikeButton like={like} />
+        </form>
         <div className="flex gap-2 items-center">
           <button
             onClick={() => setOpentComment(true)}

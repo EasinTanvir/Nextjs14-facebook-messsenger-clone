@@ -122,7 +122,11 @@ const AddNewPostModal = ({
 
             <React.Fragment>
               <div>
-                <Textarea name="caption" placeholder="What's on your mind?" />
+                <Textarea
+                  name="caption"
+                  placeholder="What's on your mind?"
+                  maxLength={100}
+                />
               </div>
             </React.Fragment>
             <React.Fragment>
@@ -135,6 +139,7 @@ const AddNewPostModal = ({
                     {!postImageLoader ? (
                       <>
                         <input
+                          accept=".png, .jpg, .jpeg"
                           name="image"
                           id="image"
                           {...getInputProps()}
@@ -175,7 +180,7 @@ const AddNewPostModal = ({
               </div>
             </React.Fragment>
 
-            <SubmitButton />
+            <SubmitButton postImageLoader={postImageLoader} />
           </div>
           <p className="mt-2 text-rose-700">{state?.message}</p>
         </form>

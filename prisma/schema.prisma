@@ -57,15 +57,21 @@ model User {
 }
 
 model Posts {
-  id      String     @id @default(auto()) @map("_id") @db.ObjectId
-  caption String?
-  image   String?
-  mode    Visibility
-  time    DateTime   @default(now())
-  userId  String     @db.ObjectId
-  like    Like[]
-  comment Comments[]
-  user    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  caption  String?
+  image    String?
+  mode     Visibility
+  time     DateTime   @default(now())
+  userId   String     @db.ObjectId
+  like     Like[]
+  comment  Comments[]
+  likeUser LikeUser[]
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+type LikeUser {
+  userId String?
+  likeId String?
 }
 
 enum Visibility {
@@ -75,15 +81,16 @@ enum Visibility {
 
 model Like {
   id      String  @id @default(auto()) @map("_id") @db.ObjectId
-  Posts   Posts?  @relation(fields: [id], references: [id])
+  Posts   Posts?  @relation(fields: [postsId], references: [id])
   User    User?   @relation(fields: [userId], references: [id])
   postsId String? @db.ObjectId
   userId  String? @db.ObjectId
 }
 
 model Comments {
-  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
   comment String
+
   User    User?   @relation(fields: [userId], references: [id])
   Posts   Posts?  @relation(fields: [postsId], references: [id])
   postsId String? @db.ObjectId

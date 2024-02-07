@@ -114,6 +114,7 @@ const Register = () => {
                   {...getInputProps()}
                   type="file"
                   name="image"
+                  accept=".jpg, .png, .jpeg"
                   id="image"
                 />
                 {isDragActive ? (
