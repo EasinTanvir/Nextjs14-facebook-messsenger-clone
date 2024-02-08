@@ -9,7 +9,8 @@ export const fetchPost = async () => {
         user: true,
         like: true,
         comment: {
-          include: { User: true },
+          include: { User: true, reply: { include: { user: true } } },
+          orderBy: { createAt: "desc" },
         },
       },
       orderBy: { time: "desc" },

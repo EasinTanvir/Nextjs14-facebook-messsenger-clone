@@ -52,6 +52,7 @@ model User {
   Posts         Posts[]
   Like          Like[]
   Comments      Comments[]
+  Reply         Reply[]
 
   @@map("users")
 }
@@ -95,4 +96,15 @@ model Comments {
   Posts    Posts?    @relation(fields: [postsId], references: [id])
   postsId  String?   @db.ObjectId
   userId   String?   @db.ObjectId
+  reply    Reply[]
+}
+
+model Reply {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  createAt  DateTime? @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  comment   Comments  @relation(fields: [commentId], references: [id])
+  userId    String    @db.ObjectId
+  commentId String    @db.ObjectId
 }

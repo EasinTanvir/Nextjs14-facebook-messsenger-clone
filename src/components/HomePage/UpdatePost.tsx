@@ -43,7 +43,7 @@ const UpdatePost = ({
           )}
         </div>
       )}
-      {comment?.length > 2 && (
+      {comment?.length > 1 && (
         <div className="mt-4">
           <button
             onClick={() => setViewMore(!viewMore)}
