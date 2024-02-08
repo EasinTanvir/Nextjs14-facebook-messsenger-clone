@@ -17,7 +17,11 @@ export const createPostAction = async (extra: any, formData: any) => {
     image: formData.get("postimage") || "",
     mode: formData.get("mode") || "",
   };
-
+  if (!sendData.caption && !sendData.image) {
+    return {
+      message: "Please write a caption or upload an image",
+    };
+  }
   try {
     await prisma.posts.create({
       data: {

@@ -31,7 +31,7 @@ export const createCommentAction = async (
 
     revalidatePath("/");
     return {
-      message: "Success",
+      message: "Comment added successful",
     };
   } catch (err) {
     return {

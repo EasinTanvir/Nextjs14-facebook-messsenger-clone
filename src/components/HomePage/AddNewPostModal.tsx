@@ -1,17 +1,18 @@
 import * as React from "react";
 import { ImCross } from "react-icons/im";
 import Modal from "@mui/material/Modal";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+
 import { Textarea } from "../ui/textarea";
 import { useDropzone } from "react-dropzone";
 import { Plus } from "lucide-react";
-import { Button } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import { useFormState } from "react-dom";
 import { createPostAction } from "../../../serverAction/createPostAction";
 import SubmitButton from "./SubmitButton";
 import firebaseUploadHandler from "@/utils/firebaseUploadHandler";
 import toast from "react-hot-toast";
 import { FallingLines } from "react-loader-spinner";
+import { useSession } from "next-auth/react";
 
 const AddNewPostModal = ({
   open,
@@ -20,6 +21,7 @@ const AddNewPostModal = ({
   open: boolean;
   setOpen: (value: boolean) => void;
 }) => {
+  const { data } = useSession();
   const [file, setFile] = React.useState<any>("");
   const [imageUrl, setImageUrl] = React.useState("");
   const [postImage, setoPostImage] = React.useState("");
@@ -75,6 +77,11 @@ const AddNewPostModal = ({
       setImageUrl("");
       setoPostImage("");
       setoPostImageLoader(false);
+    } else if (
+      state.message !== null &&
+      state.message === "Please write a caption or upload an image"
+    ) {
+      toast.success(state.message);
     }
   }, [state]);
 
@@ -104,13 +111,7 @@ const AddNewPostModal = ({
 
             <React.Fragment>
               <div className=" flex items-center gap-2">
-                <Avatar>
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                <Avatar src={data?.user.image} alt={data?.user.name} />
                 <div className="space-y-1">
                   <p className="font-bold">Easin</p>
                   <select name="mode" id="">

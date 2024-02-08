@@ -12,6 +12,8 @@ import { useFormState } from "react-dom";
 import { useEffect } from "react";
 import { createLikeAction } from "../../../serverAction/likePost";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 const Card = async ({
   id,
   caption,
@@ -27,6 +29,7 @@ const Card = async ({
   const [state, action] = useFormState(createLikeAction, {
     message: null,
   });
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     if (state && state.message === "you dislike this post") {
@@ -39,6 +42,7 @@ const Card = async ({
       toast.error(state?.message);
     }
   }, [state]);
+
   return (
     <div className="h-auto sm:max-w-[600px] max-w-[400px] flex flex-col p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
       <div className=" flex items-center gap-2">
@@ -47,12 +51,14 @@ const Card = async ({
           <AvatarFallback>{user?.userName}</AvatarFallback>
         </Avatar>
         <div className="-space-y-7">
-          <p className="font-bold">{user?.userName}</p>
+          <Link className="hover:underline" href={`/user/profile/${userId}`}>
+            <p className="font-bold">{user?.userName}</p>
+          </Link>
           <span className="text-sm"> {moment(time).fromNow()} </span>
         </div>
       </div>
       <div className="my-3">
-        <h3 className={`${!image ? "text-2xl font-semibold " : ""}`}>
+        <h3 className={`${!image ? "text-xl font-semibold " : ""}`}>
           {caption}
         </h3>
       </div>
@@ -83,7 +89,7 @@ const Card = async ({
         </div>
       </div>
 
-      <UpdatePost id={id} like={like} comment={comment} />
+      {session && <UpdatePost id={id} like={like} comment={comment} />}
     </div>
   );
 };

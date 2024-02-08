@@ -12,6 +12,7 @@ export const fetchPost = async () => {
           include: { User: true },
         },
       },
+      orderBy: { time: "desc" },
     });
 
     return posts;
@@ -19,17 +20,43 @@ export const fetchPost = async () => {
     return { message: "Something went wrong!" };
   }
 };
-export const fetchMyPost = async () => {
+export const fetchMyPost = async (id: string) => {
   const session = await getServerCredentials();
 
+  let posts;
+
   try {
-    const posts = await prisma.posts.findMany({
+    if (session) {
+      posts = await prisma.posts.findMany({
+        where: {
+          userId: id,
+        },
+      });
+    } else {
+      if (session) {
+        posts = await prisma.posts.findMany({
+          where: {
+            userId: id,
+            mode: "PUBLIC",
+          },
+        });
+      }
+    }
+    return posts;
+  } catch (err) {
+    return { message: "Something went wrong!" };
+  }
+};
+
+export const fetchUser = async (id: string) => {
+  try {
+    const user = await prisma.user.findUnique({
       where: {
-        userId: session?.user.id,
+        id,
       },
     });
 
-    return posts;
+    return user;
   } catch (err) {
     return { message: "Something went wrong!" };
   }

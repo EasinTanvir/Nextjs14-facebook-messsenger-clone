@@ -12,7 +12,7 @@ const AddNewComment = ({ id }: { id: string }) => {
   });
 
   useEffect(() => {
-    if (state && state.message === "Success") {
+    if (state && state.message === "Comment added successful") {
       toast.success(state?.message);
     }
     if (state?.message && state.message !== "Success") {

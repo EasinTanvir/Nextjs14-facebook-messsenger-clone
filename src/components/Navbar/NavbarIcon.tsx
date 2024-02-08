@@ -61,7 +61,7 @@ const NavbarIcon = () => {
               {profileItems.map((item) => (
                 <React.Fragment key={item.id}>
                   <MenubarSeparator />
-                  <Link href={item.href}>
+                  <Link href={`${item.href}/${session.user.id}`}>
                     <MenubarItem>{item.label}</MenubarItem>
                   </Link>
                 </React.Fragment>

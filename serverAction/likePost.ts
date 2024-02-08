@@ -17,6 +17,7 @@ export const createLikeAction = async (
       message: "Unauthorized access",
     };
   }
+
   try {
     const post = await prisma.posts.findUnique({
       where: { id: postId },

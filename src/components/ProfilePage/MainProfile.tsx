@@ -5,7 +5,7 @@ import NewPost from "../HomePage/NewPost";
 import Card from "../HomePage/Card";
 import { getServerCredentials } from "../../../actions/sersverSession";
 
-const MainProfile = async ({ posts }: any) => {
+const MainProfile = async ({ posts, user }: any) => {
   const session = await getServerCredentials();
 
   return (
@@ -20,7 +20,6 @@ const MainProfile = async ({ posts }: any) => {
           />
           <div className="absolute right-0 bottom-6">
             <button>
-              {" "}
               <MdEdit size={25} className="" />
             </button>
           </div>
@@ -29,22 +28,20 @@ const MainProfile = async ({ posts }: any) => {
           <div>
             <h1>
               <span className="font-semibold "> Name : </span>
-              {session?.user?.name}
+              {user?.userName}
             </h1>
             <h1>
               <span className="font-semibold "> Email : </span>
-              easin@gmail.com
-            </h1>
-            <h1>
-              <span className="font-semibold "> TotalPost : </span>
-              10
+              {user?.email}
             </h1>
           </div>
-          <div className="mt-4">
-            <button className="bg-teal-800 text-white px-4 py-2 rounded-md ">
-              Update Your Profile
-            </button>
-          </div>
+          {session?.user.id === user?.id && (
+            <div className="mt-4">
+              <button className="bg-teal-800 text-white px-4 py-2 rounded-md ">
+                Update Your Profile
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="border flex flex-col gap-10 items-center flex-1 py-4">
