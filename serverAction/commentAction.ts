@@ -18,6 +18,11 @@ export const createCommentAction = async (
       message: "Unauthorized access",
     };
   }
+  if (!comment) {
+    return {
+      message: "Please type your comment",
+    };
+  }
 
   try {
     await prisma.comments.create({

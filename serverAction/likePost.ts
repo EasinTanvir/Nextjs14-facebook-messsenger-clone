@@ -45,7 +45,7 @@ export const createLikeAction = async (
       await prisma.like.delete({ where: { id: postData?.likeId! } });
       revalidatePath("/");
       return {
-        message: "Success",
+        message: "you dislike this post",
       };
     } else {
       const res = await prisma.like.create({
@@ -63,12 +63,11 @@ export const createLikeAction = async (
           likeUser: { set: [{ userId: session.user.id, likeId: res.id }] },
         },
       });
+      revalidatePath("/");
+      return {
+        message: "you like this post",
+      };
     }
-
-    revalidatePath("/");
-    return {
-      message: "Success",
-    };
   } catch (err) {
     return {
       message: "Something went wrong!",

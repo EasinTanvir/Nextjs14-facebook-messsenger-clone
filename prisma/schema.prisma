@@ -88,11 +88,11 @@ model Like {
 }
 
 model Comments {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  comment String
-
-  User    User?   @relation(fields: [userId], references: [id])
-  Posts   Posts?  @relation(fields: [postsId], references: [id])
-  postsId String? @db.ObjectId
-  userId  String? @db.ObjectId
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  comment  String
+  createAt DateTime? @default(now())
+  User     User?     @relation(fields: [userId], references: [id])
+  Posts    Posts?    @relation(fields: [postsId], references: [id])
+  postsId  String?   @db.ObjectId
+  userId   String?   @db.ObjectId
 }

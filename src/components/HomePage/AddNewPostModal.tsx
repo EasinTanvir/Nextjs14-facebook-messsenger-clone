@@ -11,6 +11,8 @@ import { createPostAction } from "../../../serverAction/createPostAction";
 import SubmitButton from "./SubmitButton";
 import firebaseUploadHandler from "@/utils/firebaseUploadHandler";
 import toast from "react-hot-toast";
+import { FallingLines } from "react-loader-spinner";
+
 const AddNewPostModal = ({
   open,
   setOpen,
@@ -22,7 +24,7 @@ const AddNewPostModal = ({
   const [imageUrl, setImageUrl] = React.useState("");
   const [postImage, setoPostImage] = React.useState("");
   const [postImageLoader, setoPostImageLoader] = React.useState(false);
-  console.log(file.name);
+
   // @ts-expect-error
   const [state, action] = useFormState(createPostAction, { message: null });
 
@@ -69,6 +71,10 @@ const AddNewPostModal = ({
     if (state.message !== null && state.message === "Success") {
       setOpen(false);
       toast.success("Create post Successfull");
+      setFile("");
+      setImageUrl("");
+      setoPostImage("");
+      setoPostImageLoader(false);
     }
   }, [state]);
 
@@ -154,7 +160,14 @@ const AddNewPostModal = ({
                         )}
                       </>
                     ) : (
-                      <p>Loading.....</p>
+                      <div>
+                        <FallingLines
+                          color="#4fa94d"
+                          width="100"
+                          visible={true}
+                        />
+                        <span>Please wait...</span>
+                      </div>
                     )}
                   </div>
                 ) : (

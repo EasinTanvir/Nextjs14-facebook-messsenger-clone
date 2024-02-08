@@ -4,6 +4,7 @@ import { getServerCredentials } from "./sersverSession";
 export const fetchPost = async () => {
   try {
     const posts = await prisma.posts.findMany({
+      where: { mode: "PUBLIC" },
       include: {
         user: true,
         like: true,
