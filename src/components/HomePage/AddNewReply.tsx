@@ -5,7 +5,15 @@ import CommentButton from "./CommentButton";
 import toast from "react-hot-toast";
 import { createReplyAction } from "../../../serverAction/replyAction";
 
-const AddNewReply = ({ id }: { id: string }) => {
+const AddNewReply = ({
+  id,
+  userId,
+  postId,
+}: {
+  id: string;
+  userId: any;
+  postId: any;
+}) => {
   const [data, setData] = useState("");
   // @ts-expect-error
   const [state, action] = useFormState(createReplyAction, {
@@ -15,6 +23,8 @@ const AddNewReply = ({ id }: { id: string }) => {
   return (
     <form action={action} className="w-full mt-4 relative ps-12">
       <input type="hidden" name="commentId" value={id} />
+      <input type="hidden" name="userId" value={userId} />
+      <input type="hidden" name="postId" value={postId} />
 
       <input
         className="w-full py-2 rounded-full outline-none border border-slate-400 px-4"

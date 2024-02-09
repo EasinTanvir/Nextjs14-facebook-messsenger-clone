@@ -3,6 +3,7 @@ import { prisma } from "../prismaClient";
 import { getServerCredentials } from "../actions/sersverSession";
 
 import { revalidatePath } from "next/cache";
+import { pusherServer } from "@/lib/pusher";
 
 export const createReplyAction = async (
   prevState: any,
@@ -11,6 +12,8 @@ export const createReplyAction = async (
 ) => {
   const text = formData.get("text");
   const commentId = formData.get("commentId");
+  const userId = formData.get("userId");
+  const postId = formData.get("postId");
   const session = await getServerCredentials();
 
   if (!session) {
@@ -23,6 +26,15 @@ export const createReplyAction = async (
       message: "Please type your comment",
     };
   }
+
+  const data = {
+    userId: session.user.id,
+    postId,
+    name: session.user.name,
+    image: session.user.image,
+    message: "reply to your comment",
+  };
+  pusherServer.trigger(`${userId}`, "message", data);
 
   try {
     await prisma.reply.create({
