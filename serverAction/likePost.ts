@@ -3,6 +3,7 @@ import { prisma } from "../prismaClient";
 import { getServerCredentials } from "../actions/sersverSession";
 
 import { revalidatePath } from "next/cache";
+import { pusherServer } from "@/lib/pusher";
 
 export const createLikeAction = async (
   prevState: any,
@@ -11,12 +12,21 @@ export const createLikeAction = async (
 ) => {
   const session = await getServerCredentials();
   const postId = formData.get("postId");
+  const userId = formData.get("userId");
 
   if (!session) {
     return {
       message: "Unauthorized access",
     };
   }
+  const data = {
+    userId: session.user.id,
+    postId,
+    name: session.user.name,
+    image: session.user.image,
+    message: "liked your post",
+  };
+  console.log(userId);
 
   try {
     const post = await prisma.posts.findUnique({
@@ -49,6 +59,7 @@ export const createLikeAction = async (
         message: "you dislike this post",
       };
     } else {
+      pusherServer.trigger(`${userId}`, "message", data);
       const res = await prisma.like.create({
         data: {
           postsId: postId,

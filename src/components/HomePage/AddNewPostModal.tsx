@@ -21,7 +21,7 @@ const AddNewPostModal = ({
   open: boolean;
   setOpen: (value: boolean) => void;
 }) => {
-  const { data } = useSession();
+  const { data: session } = useSession();
   const [file, setFile] = React.useState<any>("");
   const [imageUrl, setImageUrl] = React.useState("");
   const [postImage, setoPostImage] = React.useState("");
@@ -111,9 +111,9 @@ const AddNewPostModal = ({
 
             <React.Fragment>
               <div className=" flex items-center gap-2">
-                <Avatar src={data?.user.image} alt={data?.user.name} />
+                <Avatar src={session?.user.image} alt={session?.user.name} />
                 <div className="space-y-1">
-                  <p className="font-bold">Easin</p>
+                  <p className="font-bold">{session?.user.name}</p>
                   <select name="mode" id="">
                     <option value="PUBLIC" key="">
                       Public

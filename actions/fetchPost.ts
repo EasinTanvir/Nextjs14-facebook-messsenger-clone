@@ -29,19 +29,30 @@ export const fetchMyPost = async (id: string) => {
   try {
     if (session) {
       posts = await prisma.posts.findMany({
-        where: {
-          userId: id,
+        where: { userId: id },
+        include: {
+          user: true,
+          like: true,
+          comment: {
+            include: { User: true, reply: { include: { user: true } } },
+            orderBy: { createAt: "desc" },
+          },
         },
+        orderBy: { time: "desc" },
       });
     } else {
-      if (session) {
-        posts = await prisma.posts.findMany({
-          where: {
-            userId: id,
-            mode: "PUBLIC",
+      posts = await prisma.posts.findMany({
+        where: { userId: id, mode: "PRIVATE" },
+        include: {
+          user: true,
+          like: true,
+          comment: {
+            include: { User: true, reply: { include: { user: true } } },
+            orderBy: { createAt: "desc" },
           },
-        });
-      }
+        },
+        orderBy: { time: "desc" },
+      });
     }
     return posts;
   } catch (err) {
@@ -58,6 +69,27 @@ export const fetchUser = async (id: string) => {
     });
 
     return user;
+  } catch (err) {
+    return { message: "Something went wrong!" };
+  }
+};
+export const fetchPostbyId = async (id: string) => {
+  try {
+    const post = await prisma.posts.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        user: true,
+        like: true,
+        comment: {
+          include: { User: true, reply: { include: { user: true } } },
+          orderBy: { createAt: "desc" },
+        },
+      },
+    });
+
+    return post;
   } catch (err) {
     return { message: "Something went wrong!" };
   }
