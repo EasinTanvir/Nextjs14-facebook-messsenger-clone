@@ -11,15 +11,6 @@ const AddNewComment = ({ id }: { id: string }) => {
     message: null,
   });
 
-  useEffect(() => {
-    if (state && state.message === "Comment added successful") {
-      toast.success(state?.message);
-    }
-    if (state?.message && state.message !== "Success") {
-      toast.error(state?.message);
-    }
-  }, [state]);
-
   return (
     <form action={action} className="w-full mt-4 relative">
       <input type="hidden" name="positId" value={id} />
