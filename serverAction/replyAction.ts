@@ -27,15 +27,6 @@ export const createReplyAction = async (
     };
   }
 
-  const data = {
-    userId: session.user.id,
-    postId,
-    name: session.user.name,
-    image: session.user.image,
-    message: "reply to your comment",
-  };
-  pusherServer.trigger(`${userId}`, "message", data);
-
   try {
     await prisma.reply.create({
       data: { text, userId: session.user.id, commentId },

@@ -32,8 +32,29 @@ export const createCommentAction = async (
     image: session.user.image,
     message: "comment on your post",
   };
-  pusherServer.trigger(`${userId}`, "message", data);
+
+  if (userId !== session.user.id) {
+    pusherServer.trigger(`${userId}`, "message", data);
+  }
+
   try {
+    let userC = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    const exUser: any = userC?.notification.map((item) => item);
+
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        notification: [...exUser, data],
+      },
+    });
+
     await prisma.comments.create({
       data: { comment: comment, postsId: postId, userId: session.user.id },
     });

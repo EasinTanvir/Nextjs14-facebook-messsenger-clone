@@ -21,6 +21,8 @@ import { profileItems } from "@/utils/listItem";
 import React, { useEffect, useState } from "react";
 import { pusherClient } from "@/lib/pusher";
 
+import axios from "axios";
+
 const NavbarIcon = () => {
   const router = useRouter();
   const [notification, setNotification] = useState([]);
@@ -42,6 +44,23 @@ const NavbarIcon = () => {
     return () => {
       pusherClient.unsubscribe(`${session?.user.id}`);
     };
+  }, [session?.user.id]);
+
+  const fetchClientUser = async () => {
+    try {
+      const { data } = await axios.get(`/api/user/${session?.user.id}`);
+      console.log(data);
+      console.log(session?.user.id);
+      setNotification(data.message.notification);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (session?.user.id && status === "authenticated") {
+      fetchClientUser();
+    }
   }, [session?.user.id]);
 
   return (

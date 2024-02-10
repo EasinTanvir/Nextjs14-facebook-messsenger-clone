@@ -59,7 +59,35 @@ export const createLikeAction = async (
         message: "you dislike this post",
       };
     } else {
-      pusherServer.trigger(`${userId}`, "message", data);
+      let existingNotification = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (
+        !existingNotification?.notification.includes(postId) &&
+        userId !== session.user.id
+      ) {
+        let userC = await prisma.user.findUnique({
+          where: {
+            id: userId,
+          },
+        });
+
+        const exUser: any = userC?.notification.map((item) => item);
+
+        await prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            notification: [...exUser, data],
+          },
+        });
+        pusherServer.trigger(`${userId}`, "message", data);
+      }
+
       const res = await prisma.like.create({
         data: {
           postsId: postId,
