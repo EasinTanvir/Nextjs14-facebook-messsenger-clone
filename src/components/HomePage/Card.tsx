@@ -77,6 +77,7 @@ const Card = async ({
         <div className="flex gap-1 items-center">
           <form action={action}>
             <input name="postId" type="hidden" value={id} />
+            <input name="userId" type="hidden" value={userId} />
 
             <LikeButton like={like} />
           </form>
@@ -89,7 +90,9 @@ const Card = async ({
         </div>
       </div>
 
-      {session && <UpdatePost id={id} like={like} comment={comment} />}
+      {session && (
+        <UpdatePost id={id} like={like} comment={comment} userId={userId} />
+      )}
     </div>
   );
 };

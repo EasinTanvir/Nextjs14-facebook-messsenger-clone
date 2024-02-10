@@ -4,7 +4,15 @@ import moment from "moment";
 import ReplyCart from "./ReplyCart";
 import AddNewReply from "./AddNewReply";
 
-const CommentCart = ({ item }: { item: any }) => {
+const CommentCart = ({
+  item,
+  userId,
+  postId,
+}: {
+  item: any;
+  userId: any;
+  postId: any;
+}) => {
   const [replyBox, setReplyBox] = useState(false);
 
   return (
@@ -34,7 +42,7 @@ const CommentCart = ({ item }: { item: any }) => {
       {item?.reply?.map((item: any) => (
         <ReplyCart key={item.id} item={item} />
       ))}
-      {replyBox && <AddNewReply id={item.id} />}
+      {replyBox && <AddNewReply id={item.id} userId={userId} postId={postId} />}
     </div>
   );
 };

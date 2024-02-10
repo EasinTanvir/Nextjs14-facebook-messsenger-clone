@@ -10,10 +10,12 @@ const UpdatePost = ({
   id,
   like,
   comment,
+  userId,
 }: {
   id: string;
   like: any;
   comment: any;
+  userId: any;
 }) => {
   const [openComment, setOpentComment] = useState(false);
 
@@ -23,7 +25,7 @@ const UpdatePost = ({
   return (
     <>
       <>
-        <AddNewComment id={id} />
+        <AddNewComment id={id} userId={userId} />
       </>
 
       {comment?.length > 0 && (
@@ -31,13 +33,13 @@ const UpdatePost = ({
           {viewMore ? (
             <React.Fragment>
               {comment?.map((item: any, id: number) => (
-                <CommentCart key={id} item={item} />
+                <CommentCart key={id} item={item} userId={userId} postId={id} />
               ))}
             </React.Fragment>
           ) : (
             <React.Fragment>
               {firstComment?.map((item: any, id: number) => (
-                <CommentCart key={id} item={item} />
+                <CommentCart key={id} item={item} userId={userId} postId={id} />
               ))}
             </React.Fragment>
           )}

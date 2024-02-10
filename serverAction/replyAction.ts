@@ -3,6 +3,7 @@ import { prisma } from "../prismaClient";
 import { getServerCredentials } from "../actions/sersverSession";
 
 import { revalidatePath } from "next/cache";
+import { pusherServer } from "@/lib/pusher";
 
 export const createReplyAction = async (
   prevState: any,
@@ -11,6 +12,8 @@ export const createReplyAction = async (
 ) => {
   const text = formData.get("text");
   const commentId = formData.get("commentId");
+  const userId = formData.get("userId");
+  const postId = formData.get("postId");
   const session = await getServerCredentials();
 
   if (!session) {
