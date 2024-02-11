@@ -64,14 +64,14 @@ const NavbarIcon = () => {
   }, [session?.user.id]);
 
   return (
-    <div className="flex justify-end mlg:flex-1 w-36  gap-2  items-center">
+    <div className="flex justify-end md:flex-1 w-36  sm:gap-2  items-center">
       <Tooltip title="Start Chat With your friends">
         <li className="cursor-pointer w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
           <FaFacebookMessenger size={27} />
         </li>
       </Tooltip>
 
-      <li className="cursor-pointer w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
+      <li className="cursor-pointer w-fit h-fit p-0 flex items-center justify-center transition rounded-full hover:bg-slate-300">
         <div className="p-1 relative">
           <Menubar>
             <MenubarMenu>
@@ -80,31 +80,41 @@ const NavbarIcon = () => {
               </MenubarTrigger>
               <MenubarContent className="px-6 py-4">
                 <ul className="space-y-4">
-                  {notification.map((item: any, i) => (
+                  {notification.length === 0 ? (
+                    <div className="h-10 flex justify-center items-center">
+                      <p className="font-semibold text-rose-700">
+                        You have no norification
+                      </p>
+                    </div>
+                  ) : (
                     <>
-                      <div className=" flex items-center gap-2">
-                        <Avatar src={item?.image} alt={item?.name} />
-                        <div className="-space-y-7">
-                          <Link
-                            className="hover:underline"
-                            href={`/user/profile/${item?.userId}`}
-                          >
-                            <p className="font-bold">{item?.name}</p>
-                          </Link>
-                          <span className="text-sm">
-                            <span>{item?.message}</span>
-                            <Link
-                              href={`/post/${item.postId}`}
-                              className="ms-2 bg-rose-700 text-white px-2 py-1 rounded-md  "
-                            >
-                              view
-                            </Link>
-                          </span>
-                        </div>
-                      </div>
-                      <MenubarSeparator />
+                      {notification.map((item: any, i) => (
+                        <>
+                          <div className=" flex items-center gap-2">
+                            <Avatar src={item?.image} alt={item?.name} />
+                            <div className="-space-y-7">
+                              <Link
+                                className="hover:underline"
+                                href={`/user/profile/${item?.userId}`}
+                              >
+                                <p className="font-bold">{item?.name}</p>
+                              </Link>
+                              <span className="text-sm">
+                                <span>{item?.message}</span>
+                                <Link
+                                  href={`/post/${item.postId}`}
+                                  className="ms-2 bg-rose-700 text-white px-2 py-1 rounded-md  "
+                                >
+                                  view
+                                </Link>
+                              </span>
+                            </div>
+                          </div>
+                          <MenubarSeparator />
+                        </>
+                      ))}
                     </>
-                  ))}
+                  )}
                 </ul>
               </MenubarContent>
             </MenubarMenu>
@@ -142,7 +152,14 @@ const NavbarIcon = () => {
               {profileItems.map((item) => (
                 <React.Fragment key={item.id}>
                   <MenubarSeparator />
-                  <Link prefetch href={`${item.href}/${session.user.id}`}>
+                  <Link
+                    prefetch
+                    href={
+                      item.href === "/user/profile"
+                        ? `${item.href}/${session.user.id}`
+                        : item.href
+                    }
+                  >
                     <MenubarItem>{item.label}</MenubarItem>
                   </Link>
                 </React.Fragment>

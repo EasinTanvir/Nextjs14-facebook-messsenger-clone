@@ -22,7 +22,7 @@ const Navbar = () => {
         <div className="flex flex-1  gap-4">
           <FaFacebook size={40} />
           <input
-            className=" bg-slate-200 rounded-lg    sm:w-60 w-44 px-4 outline-none"
+            className=" bg-slate-200 rounded-lg    sm:w-60 sm:block hidden px-4 outline-none"
             type="text"
             name=""
             placeholder="Search here"
