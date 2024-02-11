@@ -44,7 +44,7 @@ const Card = async ({
   }, [state]);
 
   return (
-    <div className="h-auto sm:max-w-[600px] max-w-[400px] flex flex-col p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
+    <div className="h-auto sm:max-w-[600px] max-w-[355px] flex flex-col p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
       <div className=" flex items-center gap-2">
         <Avatar>
           <AvatarImage src={user?.image} alt="@shadcn" />

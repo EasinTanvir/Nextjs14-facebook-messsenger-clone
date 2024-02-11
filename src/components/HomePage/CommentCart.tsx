@@ -42,7 +42,7 @@ const CommentCart = ({
       {item?.reply?.map((item: any) => (
         <ReplyCart key={item.id} item={item} />
       ))}
-      {replyBox && <AddNewReply id={item.id} userId={userId} postId={postId} />}
+      {replyBox && <AddNewReply id={item.id} />}
     </div>
   );
 };

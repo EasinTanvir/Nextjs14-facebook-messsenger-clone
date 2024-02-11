@@ -11,6 +11,7 @@ export async function GET(req: NextRequest, { params: { uid } }: Props) {
         id: uid,
       },
     });
+
     return NextResponse.json({ message: user }, { status: 201 });
   } catch (err) {
     return NextResponse.json(

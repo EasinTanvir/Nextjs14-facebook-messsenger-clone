@@ -1,3 +1,4 @@
+import { notFound, redirect } from "next/navigation";
 import { prisma } from "../prismaClient";
 import { getServerCredentials } from "./sersverSession";
 
@@ -18,7 +19,7 @@ export const fetchPost = async () => {
 
     return posts;
   } catch (err) {
-    return { message: "Something went wrong!" };
+    throw new Error("Something went wrong! Fetch posts failed");
   }
 };
 export const fetchMyPost = async (id: string) => {
@@ -54,9 +55,13 @@ export const fetchMyPost = async (id: string) => {
         orderBy: { time: "desc" },
       });
     }
+
+    if (!posts || posts.length === 0) {
+      notFound();
+    }
     return posts;
   } catch (err) {
-    return { message: "Something went wrong!" };
+    throw new Error("Something went wrong! Fetch individual posts failed");
   }
 };
 
@@ -68,9 +73,13 @@ export const fetchUser = async (id: string) => {
       },
     });
 
+    if (!user) {
+      notFound();
+    }
+
     return user;
   } catch (err) {
-    return { message: "Something went wrong!" };
+    throw new Error("Something went wrong! Fetch user failed");
   }
 };
 export const fetchPostbyId = async (id: string) => {
@@ -89,8 +98,11 @@ export const fetchPostbyId = async (id: string) => {
       },
     });
 
+    if (!post) {
+      notFound();
+    }
     return post;
   } catch (err) {
-    return { message: "Something went wrong!" };
+    throw new Error("Something went wrong! Fetch posts failed");
   }
 };

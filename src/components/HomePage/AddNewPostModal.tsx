@@ -83,7 +83,7 @@ const AddNewPostModal = ({
     ) {
       toast.success(state.message);
     }
-  }, [state]);
+  }, [state.message, open]);
 
   return (
     <Modal
@@ -94,7 +94,7 @@ const AddNewPostModal = ({
       <div className="h-screen flex justify-center items-center">
         <form
           action={action}
-          className="sm:w-[590px] w-[380px] relative bg-white rounded-lg p-4 min-h-[500px] shadow-lg shadow-slate-600"
+          className="sm:w-[590px] w-[350px] relative bg-white rounded-lg p-4 min-h-[500px] shadow-lg shadow-slate-600"
         >
           <div className="absolute top-1 h-8 w-8  rounded-full bg-rose-700 right-1 flex justify-center items-center">
             <ImCross

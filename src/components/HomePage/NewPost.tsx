@@ -15,7 +15,7 @@ const NewPost = () => {
   }
 
   return (
-    <div className="min-h-[100px] sm:max-w-[600px] max-w-[400px] flex flex-col gap-4 p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
+    <div className="min-h-[100px] sm:max-w-[600px] max-w-[350px] flex flex-col gap-4 p-4  w-full border bg-white shadow-xl shadow-slate-400 rounded-md">
       <div className="flex items-center gap-5">
         <Avatar src={session?.user.image} alt={session?.user.name} />
         <div className="flex-1">
