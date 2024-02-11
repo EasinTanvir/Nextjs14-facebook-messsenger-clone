@@ -52,10 +52,17 @@ model User {
   Posts         Posts[]
   Like          Like[]
   Comments      Comments[]
+  friends       Friends[]
   Reply         Reply[]
   notification  Notification[]
 
   @@map("users")
+}
+
+model Friends {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  User   User   @relation(fields: [userId], references: [id])
 }
 
 type Notification {

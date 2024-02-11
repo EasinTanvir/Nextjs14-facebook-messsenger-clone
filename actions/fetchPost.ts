@@ -82,6 +82,15 @@ export const fetchUser = async (id: string) => {
     throw new Error("Something went wrong! Fetch user failed");
   }
 };
+export const fetchAllUsers = async () => {
+  try {
+    const user = await prisma.user.findMany();
+
+    return user;
+  } catch (err) {
+    throw new Error("Something went wrong! Fetch user failed");
+  }
+};
 export const fetchPostbyId = async (id: string) => {
   try {
     const post = await prisma.posts.findUnique({
