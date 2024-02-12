@@ -83,8 +83,12 @@ export const fetchUser = async (id: string) => {
   }
 };
 export const fetchAllUsers = async () => {
+  const session = await getServerCredentials();
+
   try {
-    const user = await prisma.user.findMany();
+    const user = await prisma.user.findMany({
+      where: { NOT: { id: session?.user.id } },
+    });
 
     return user;
   } catch (err) {

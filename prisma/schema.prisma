@@ -59,10 +59,9 @@ model User {
   @@map("users")
 }
 
-model Friends {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  User   User   @relation(fields: [userId], references: [id])
+type Friends {
+  userId   String
+  friendId String
 }
 
 type Notification {
