@@ -2,7 +2,7 @@ import React from "react";
 import { useFormStatus } from "react-dom";
 import { ColorRing } from "react-loader-spinner";
 
-const SubmitButton = ({ postImageLoader }: { postImageLoader: boolean }) => {
+const FrndButton = () => {
   const { pending, action } = useFormStatus();
 
   return (
@@ -10,7 +10,7 @@ const SubmitButton = ({ postImageLoader }: { postImageLoader: boolean }) => {
       <button
         type="submit"
         className={`bg-teal-700 ${
-          postImageLoader || pending ? "opacity-55" : "opacity-100"
+          pending ? "opacity-55" : "opacity-100"
         } px-4 py-2 rounded-md text-white hover:text-slate-300`}
       >
         {pending ? (
@@ -24,11 +24,11 @@ const SubmitButton = ({ postImageLoader }: { postImageLoader: boolean }) => {
             colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
           />
         ) : (
-          "Publish"
+          "Accept"
         )}
       </button>
     </div>
   );
 };
 
-export default SubmitButton;
+export default FrndButton;

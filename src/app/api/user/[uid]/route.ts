@@ -12,7 +12,15 @@ export async function GET(req: NextRequest, { params: { uid } }: Props) {
       },
     });
 
-    return NextResponse.json({ message: user }, { status: 201 });
+    return NextResponse.json(
+      {
+        message: user,
+        id: user?.id,
+        userName: user?.userName,
+        image: user?.image,
+      },
+      { status: 201 }
+    );
   } catch (err) {
     return NextResponse.json(
       { message: "something webt wrong" },

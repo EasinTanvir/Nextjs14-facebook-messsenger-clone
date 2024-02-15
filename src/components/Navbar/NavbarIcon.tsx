@@ -22,9 +22,12 @@ import React, { useEffect, useState } from "react";
 import { pusherClient } from "@/lib/pusher";
 
 import axios from "axios";
+import FriendReqListModal from "../FriendReqListModal";
 
 const NavbarIcon = () => {
   const router = useRouter();
+  const [open, setOpen] = useState<boolean>(false);
+  const [userId, setUserId] = useState<string>("");
   const [notification, setNotification] = useState([]);
   const { data: session, status } = useSession();
 
@@ -49,9 +52,11 @@ const NavbarIcon = () => {
   const fetchClientUser = async () => {
     try {
       const { data } = await axios.get(`/api/user/${session?.user.id}`);
-      console.log(data);
-      console.log(session?.user.id);
-      setNotification(data.message.notification);
+
+      let array = data?.message?.notification;
+      let reversedArray = array.slice().reverse();
+
+      setNotification(reversedArray);
     } catch (err) {
       console.log(err);
     }
@@ -62,6 +67,11 @@ const NavbarIcon = () => {
       fetchClientUser();
     }
   }, [session?.user.id]);
+
+  const onFriendModalHandler = (id: string) => {
+    setOpen(true);
+    setUserId(id);
+  };
 
   return (
     <div className="flex justify-end md:flex-1 w-36  sm:gap-2  items-center">
@@ -80,7 +90,7 @@ const NavbarIcon = () => {
               </MenubarTrigger>
               <MenubarContent className="px-6 py-4">
                 <ul className="space-y-4">
-                  {notification.length === 0 ? (
+                  {notification.length === 0 || status === "unauthenticated" ? (
                     <div className="h-10 flex justify-center items-center">
                       <p className="font-semibold text-rose-700">
                         You have no norification
@@ -101,12 +111,25 @@ const NavbarIcon = () => {
                               </Link>
                               <span className="text-sm">
                                 <span>{item?.message}</span>
-                                <Link
-                                  href={`/post/${item.postId}`}
-                                  className="ms-2 bg-rose-700 text-white px-2 py-1 rounded-md  "
-                                >
-                                  view
-                                </Link>
+                                {item?.message ===
+                                  "has sent you a friend req" ||
+                                "has accepted friend req" ? (
+                                  <button
+                                    onClick={() =>
+                                      onFriendModalHandler(item?.userId)
+                                    }
+                                    className="ms-2 bg-rose-700 text-white px-2 py-1 rounded-md  "
+                                  >
+                                    Show
+                                  </button>
+                                ) : (
+                                  <Link
+                                    href={`/post/${item.postId}`}
+                                    className="ms-2 bg-rose-700 text-white px-2 py-1 rounded-md  "
+                                  >
+                                    view
+                                  </Link>
+                                )}
                               </span>
                             </div>
                           </div>
@@ -153,7 +176,6 @@ const NavbarIcon = () => {
                 <React.Fragment key={item.id}>
                   <MenubarSeparator />
                   <Link
-                    prefetch
                     href={
                       item.href === "/user/profile"
                         ? `${item.href}/${session.user.id}`
@@ -175,6 +197,7 @@ const NavbarIcon = () => {
           </MenubarMenu>
         </Menubar>
       )}
+      <FriendReqListModal open={open} userId={userId} setOpen={setOpen} />
     </div>
   );
 };

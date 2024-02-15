@@ -1,7 +1,14 @@
 import React from "react";
 import ChatUser from "./ChatUser";
+import { fetchConversation } from "../../../actions/fetchConversation";
 
-const MessengerSide = ({ open, setOpen }: { open: any; setOpen: any }) => {
+const MessengerSide = async ({
+  open,
+  setOpen,
+}: {
+  open: any;
+  setOpen: any;
+}) => {
   return (
     <div
       className={`sm:w-[300px] ${

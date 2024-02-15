@@ -1,12 +1,11 @@
-import * as React from "react";
+"use client";
+import React from "react";
 import { ImCross } from "react-icons/im";
 import Modal from "@mui/material/Modal";
-
 import { Textarea } from "../ui/textarea";
 import { useDropzone } from "react-dropzone";
 import { Plus } from "lucide-react";
-import { Avatar, Button } from "@mui/material";
-import { useFormState } from "react-dom";
+import { Avatar } from "@mui/material";
 import { createPostAction } from "../../../serverAction/createPostAction";
 import SubmitButton from "./SubmitButton";
 import firebaseUploadHandler from "@/utils/firebaseUploadHandler";
@@ -26,9 +25,6 @@ const AddNewPostModal = ({
   const [imageUrl, setImageUrl] = React.useState("");
   const [postImage, setoPostImage] = React.useState("");
   const [postImageLoader, setoPostImageLoader] = React.useState(false);
-
-  // @ts-expect-error
-  const [state, action] = useFormState(createPostAction, { message: null });
 
   const onDrop = React.useCallback((acceptedFiles: any) => {
     if (acceptedFiles.length > 0) {
@@ -69,21 +65,16 @@ const AddNewPostModal = ({
     uploadFile();
   }, [file]);
 
-  React.useEffect(() => {
-    if (state.message !== null && state.message === "Success") {
+  async function clientAction(formData: FormData) {
+    const result = await createPostAction(formData);
+
+    if (result?.error) {
+      toast.error(result?.error);
+    } else {
       setOpen(false);
-      toast.success("Create post Successfull");
-      setFile("");
-      setImageUrl("");
-      setoPostImage("");
-      setoPostImageLoader(false);
-    } else if (
-      state.message !== null &&
-      state.message === "Please write a caption or upload an image"
-    ) {
-      toast.success(state.message);
+      toast.success("Create Post Success");
     }
-  }, [state.message, open]);
+  }
 
   return (
     <Modal
@@ -93,7 +84,7 @@ const AddNewPostModal = ({
     >
       <div className="h-screen flex justify-center items-center">
         <form
-          action={action}
+          action={clientAction}
           className="sm:w-[590px] w-[350px] relative bg-white rounded-lg p-4 min-h-[500px] shadow-lg shadow-slate-600"
         >
           <div className="absolute top-1 h-8 w-8  rounded-full bg-rose-700 right-1 flex justify-center items-center">
@@ -196,7 +187,6 @@ const AddNewPostModal = ({
 
             <SubmitButton postImageLoader={postImageLoader} />
           </div>
-          <p className="mt-2 text-rose-700">{state?.message}</p>
         </form>
       </div>
     </Modal>

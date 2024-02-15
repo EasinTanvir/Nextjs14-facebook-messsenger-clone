@@ -1,15 +1,15 @@
 "use server";
 import { prisma } from "../prismaClient";
 import { getServerCredentials } from "../actions/sersverSession";
-import firebaseUploadHandler from "@/utils/firebaseUploadHandler";
+
 import { revalidatePath } from "next/cache";
 
-export const createPostAction = async (extra: any, formData: any) => {
+export const createPostAction = async (formData: any) => {
   const session = await getServerCredentials();
 
   if (!session) {
     return {
-      message: "Unauthorized access",
+      error: "Unauthorized access",
     };
   }
   const sendData = {
@@ -19,7 +19,7 @@ export const createPostAction = async (extra: any, formData: any) => {
   };
   if (!sendData.caption && !sendData.image) {
     return {
-      message: "Please write a caption or upload an image",
+      error: "Please write a caption or upload an image",
     };
   }
   try {
@@ -32,12 +32,9 @@ export const createPostAction = async (extra: any, formData: any) => {
       },
     });
     revalidatePath("/");
-    return {
-      message: "Success",
-    };
   } catch (err) {
     return {
-      message: "Something went wrong!",
+      error: "Something went wrong!",
     };
   }
 };
