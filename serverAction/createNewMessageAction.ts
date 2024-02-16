@@ -16,6 +16,7 @@ export const createNewMessageAction = async (data: any) => {
   try {
     pusherServer.trigger(`${data.receiverId}`, "messenger", data);
     await prisma.message.create({ data: data });
+    revalidatePath("/messenger");
   } catch (err) {
     return {
       error: "SomeTHing went wrong",
