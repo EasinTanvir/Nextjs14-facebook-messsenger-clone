@@ -16,6 +16,7 @@ export const fetchConversation = async () => {
         include: {
           sender: true,
           receiver: true,
+          Message: true,
         },
       });
 

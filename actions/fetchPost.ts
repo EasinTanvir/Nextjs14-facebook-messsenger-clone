@@ -85,9 +85,17 @@ export const fetchUser = async (id: string) => {
 export const fetchAllUsers = async () => {
   const session = await getServerCredentials();
 
+  let myData = await prisma.user.findUnique({
+    where: {
+      id: session?.user.id,
+    },
+  });
+
+  const alreadyFriend = myData?.friends.map((item) => item.friendId);
+
   try {
     const user = await prisma.user.findMany({
-      where: { NOT: { id: session?.user.id } },
+      where: { NOT: [{ id: session?.user.id }, { id: { in: alreadyFriend } }] },
     });
 
     return user;

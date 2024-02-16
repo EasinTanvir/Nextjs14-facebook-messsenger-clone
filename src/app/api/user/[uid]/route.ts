@@ -4,7 +4,6 @@ interface Props {
   params: { uid: string };
 }
 export async function GET(req: NextRequest, { params: { uid } }: Props) {
-  console.log(uid);
   try {
     const user = await prisma.user.findUnique({
       where: {

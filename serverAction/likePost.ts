@@ -26,7 +26,6 @@ export const createLikeAction = async (
     image: session.user.image,
     message: "liked your post",
   };
-  console.log(userId);
 
   try {
     const post = await prisma.posts.findUnique({

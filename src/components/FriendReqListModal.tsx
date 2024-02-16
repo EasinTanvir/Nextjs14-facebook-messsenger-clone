@@ -67,7 +67,7 @@ const FriendReqListModal = ({ open, userId, setOpen }: Props) => {
         {alreadyFrien ? (
           <div className="flex justify-center">
             <p className="text-white mt-4 font-semibold">
-              You Don't Have any Friend Reques
+              You Dont Have any Friend Reques
             </p>
           </div>
         ) : (

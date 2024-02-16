@@ -39,7 +39,6 @@ const NavbarIcon = () => {
   useEffect(() => {
     const channel = pusherClient.subscribe(`${session?.user.id}`);
     channel.bind("message", function (data: any) {
-      console.log("rec", data);
       //@ts-ignore
       setNotification((prev) => [...prev, data]);
     });

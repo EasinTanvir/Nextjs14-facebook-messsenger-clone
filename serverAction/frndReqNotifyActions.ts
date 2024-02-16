@@ -7,7 +7,7 @@ import { pusherServer } from "@/lib/pusher";
 export const reqForFriendAction = async (formData: any) => {
   const session = await getServerCredentials();
   const userId = formData.get("userId");
-  console.log("userId ", userId);
+
   if (!session) {
     return {
       error: "Unauthorized access",
@@ -38,7 +38,6 @@ export const reqForFriendAction = async (formData: any) => {
         notification: [...exUser, data],
       },
     });
-    console.log(t);
 
     pusherServer.trigger(`${userId}`, "message", data);
 

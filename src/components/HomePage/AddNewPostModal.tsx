@@ -122,7 +122,7 @@ const AddNewPostModal = ({
               <div>
                 <Textarea
                   name="caption"
-                  placeholder="What's on your mind?"
+                  placeholder="Whats on your mind?"
                   maxLength={100}
                 />
               </div>

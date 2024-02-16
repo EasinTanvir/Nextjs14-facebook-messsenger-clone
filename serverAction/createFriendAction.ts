@@ -65,7 +65,7 @@ export const createFriendAction = async (formData: any) => {
       });
 
       pusherServer.trigger(`${userId}`, "message", data);
-      revalidatePath("");
+      revalidatePath("/messenger");
     }
   } catch (err) {
     return {
