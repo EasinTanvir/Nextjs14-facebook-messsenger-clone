@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../../prismaClient";
+import { getServerCredentials } from "../../../../../actions/sersverSession";
 interface Props {
   params: { uid: string };
 }
 export async function GET(req: NextRequest, { params: { uid } }: Props) {
+  const session = await getServerCredentials();
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -11,7 +13,9 @@ export async function GET(req: NextRequest, { params: { uid } }: Props) {
       },
     });
 
-    const alreadyExist = user?.friends.some((item) => item.userId === uid);
+    const alreadyExist = user?.friends.some((item) =>
+      uid === session?.user.id ? item.friendId === uid : item.userId === uid
+    );
 
     return NextResponse.json(
       {
