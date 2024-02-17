@@ -14,8 +14,8 @@ export const createNewMessageAction = async (data: any) => {
     };
   }
   try {
-    pusherServer.trigger(`${data.conversationId}`, "messenger", data);
-    console.log("coverId", data.conversationId);
+    await pusherServer.trigger(`${data.conversationId}`, "messenger", data);
+
     await prisma.message.create({ data: data });
     //revalidatePath("/messenger");
   } catch (err) {

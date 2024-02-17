@@ -26,10 +26,8 @@ const FriendReqListModal = ({ open, userId, setOpen }: Props) => {
         image: data?.image,
       };
       setUser(sentData);
-      const existingFriend = data.message.friends.some(
-        (item: any) => item.userId === userId
-      );
-      setAlreadyFriend(existingFriend);
+
+      setAlreadyFriend(data.alreadyExist);
     } catch (err) {
       throw new Error("Something went wrong");
     } finally {

@@ -11,8 +11,11 @@ export async function GET(req: NextRequest, { params: { uid } }: Props) {
       },
     });
 
+    const alreadyExist = user?.friends.some((item) => item.userId === uid);
+
     return NextResponse.json(
       {
+        alreadyExist,
         message: user,
         id: user?.id,
         userName: user?.userName,
