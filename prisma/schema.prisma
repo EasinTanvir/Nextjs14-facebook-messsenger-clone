@@ -70,11 +70,11 @@ type Friends {
 }
 
 type Notification {
-  userId  String @db.ObjectId
-  postId  String
-  name    String
-  image   String
-  message String
+  userId  String  @db.ObjectId
+  postId  String?
+  name    String?
+  image   String?
+  message String?
 }
 
 model Posts {

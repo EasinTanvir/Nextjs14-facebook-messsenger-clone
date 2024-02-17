@@ -75,9 +75,12 @@ const NavbarIcon = () => {
   return (
     <div className="flex justify-end md:flex-1 w-36  sm:gap-2  items-center">
       <Tooltip title="Start Chat With your friends">
-        <li className="cursor-pointer w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
-          <FaFacebookMessenger size={27} />
-        </li>
+        <Link href="/messenger">
+          {" "}
+          <li className="cursor-pointer w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
+            <FaFacebookMessenger size={27} />
+          </li>
+        </Link>
       </Tooltip>
 
       <li className="cursor-pointer w-fit h-fit p-0 flex items-center justify-center transition rounded-full hover:bg-slate-300">

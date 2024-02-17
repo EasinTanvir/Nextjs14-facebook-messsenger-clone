@@ -16,6 +16,7 @@ const ChatUser = ({ setOpen, item }: { setOpen: any; item: any }) => {
   const router = useRouter();
 
   const onClickHandler = () => {
+    setOpen(true);
     params.set(`converId`, item.id);
 
     if (item.sender.id === session?.user.id) {
@@ -51,7 +52,7 @@ const ChatUser = ({ setOpen, item }: { setOpen: any; item: any }) => {
               ? item.receiver?.userName
               : item.sender?.userName}
           </p>
-          <p>hello</p>
+          {/* <p>hello</p> */}
         </div>
       </div>
     </React.Fragment>

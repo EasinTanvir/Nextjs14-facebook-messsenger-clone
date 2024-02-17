@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { findAllMessageAction } from "../../../serverAction/findConversationAction";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const MessageNavbar = ({ open, setOpen }: { open: any; setOpen: any }) => {
   const { data: session } = useSession();
@@ -37,12 +38,13 @@ const MessageNavbar = ({ open, setOpen }: { open: any; setOpen: any }) => {
   return (
     <div className="h-16 border-b-2 border-slate-600 flex justify-between items-center px-2">
       <div className=" flex items-center gap-2  ">
-        <button
+        <Link
+          href="/messenger"
           onClick={() => setOpen(!open)}
           className="bg-rose-600 text-white sm:hidden block px-2 py-1 rounded-md"
         >
           Back
-        </button>
+        </Link>
         {userId ? (
           <>
             <Avatar src={activeChatDate?.image} alt={activeChatDate?.name} />

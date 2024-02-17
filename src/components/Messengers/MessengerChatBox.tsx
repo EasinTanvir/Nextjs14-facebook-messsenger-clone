@@ -10,9 +10,11 @@ import { useSession } from "next-auth/react";
 import { createNewMessageAction } from "../../../serverAction/createNewMessageAction";
 import { pusherClient } from "@/lib/pusher";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const converId = searchParams.get("converId");
   const receiverId = searchParams.get("userId");
@@ -55,22 +57,22 @@ const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
       text: message,
     };
 
-    setAllMessages((prevData: any) => [...prevData, sendData]);
+    //setAllMessages((prevData: any) => [...prevData, sendData]);
     await createNewMessageAction(sendData);
 
     setMessage("");
   };
 
   useEffect(() => {
-    const channel = pusherClient.subscribe(`${session?.user.id}`);
+    const channel = pusherClient.subscribe(`${converId}`);
     channel.bind("messenger", function (data: any) {
       setAllMessages((prevData: any) => [...prevData, data]);
     });
 
     return () => {
-      pusherClient.unsubscribe(`${session?.user.id}`);
+      pusherClient.unsubscribe(`${converId}`);
     };
-  }, [session?.user.id]);
+  }, [converId, allMessage]);
 
   return (
     <div
@@ -95,6 +97,7 @@ const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
           className="flex flex-row justify-between  relative  "
         >
           <input
+            disabled={!converId}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             type="text"
@@ -104,6 +107,7 @@ const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
             className="border border-slate-600 py-2 w-full px-2 rounded-md outline-none"
           />
           <button
+            disabled={!converId}
             type="submit"
             className="absolute right-2 top-0 bottom-0 m-auto"
           >
