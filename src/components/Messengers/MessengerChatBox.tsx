@@ -76,10 +76,12 @@ const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
 
   return (
     <div
-      className={`flex-1 border relative ${!open ? "sm:block hidden " : ""}`}
+      className={`flex-1 border h-[calc(100vh-64px)] relative ${
+        !open ? "sm:block hidden " : ""
+      }`}
     >
       <MessageNavbar open={open} setOpen={setOpen} />
-      <div className="flex flex-col h-full esm:max-h-[468px] max-h-[658px] overflow-y-auto ">
+      <div className="flex flex-col h-[calc(100vh-168px)] overflow-y-auto ">
         {allMessage.length > 0 &&
           allMessage.map((item: any, i: any) => (
             <div key={i} ref={scrollRef}>
@@ -91,29 +93,31 @@ const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
             </div>
           ))}
       </div>
-      <div className="absolute bottom-0 w-full left-0">
-        <form
-          onSubmit={onSendMessageHandler}
-          className="flex flex-row justify-between  relative  "
-        >
-          <input
-            disabled={!converId}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            type="text"
-            name=""
-            placeholder="type your message"
-            id=""
-            className="border border-slate-600 py-2 w-full px-2 rounded-md outline-none"
-          />
-          <button
-            disabled={!converId}
-            type="submit"
-            className="absolute right-2 top-0 bottom-0 m-auto"
+      <div className="h-9 border border-rose-700">
+        <div className="absolute bottom-0 w-full left-0">
+          <form
+            onSubmit={onSendMessageHandler}
+            className="flex flex-row justify-between  relative  "
           >
-            <IoMdSend size={24} />
-          </button>
-        </form>
+            <input
+              disabled={!converId}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              type="text"
+              name=""
+              placeholder="type your message"
+              id=""
+              className="border border-slate-600 py-2 w-full px-2 rounded-md outline-none"
+            />
+            <button
+              disabled={!converId}
+              type="submit"
+              className="absolute right-2 top-0 bottom-0 m-auto"
+            >
+              <IoMdSend size={24} />
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

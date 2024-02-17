@@ -74,14 +74,16 @@ const NavbarIcon = () => {
 
   return (
     <div className="flex justify-end md:flex-1 w-36  sm:gap-2  items-center">
-      <Tooltip title="Start Chat With your friends">
-        <Link href="/messenger">
-          {" "}
-          <li className="cursor-pointer w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
-            <FaFacebookMessenger size={27} />
-          </li>
-        </Link>
-      </Tooltip>
+      {status === "authenticated" && (
+        <Tooltip title="Start Chat With your friends">
+          <Link href="/messenger">
+            {" "}
+            <li className="cursor-pointer w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
+              <FaFacebookMessenger size={27} />
+            </li>
+          </Link>
+        </Tooltip>
+      )}
 
       <li className="cursor-pointer w-fit h-fit p-0 flex items-center justify-center transition rounded-full hover:bg-slate-300">
         <div className="p-1 relative">
@@ -145,9 +147,11 @@ const NavbarIcon = () => {
             </MenubarMenu>
           </Menubar>
 
-          <div className="absolute -right-1 top-0 w-5 h-5 rounded-full bg-rose-900 text-white flex justify-center items-center">
-            {notification.length}
-          </div>
+          {
+            <div className="absolute -right-1 top-0 w-5 h-5 rounded-full bg-rose-900 text-white flex justify-center items-center">
+              {status === "authenticated" ? notification.length : 0}
+            </div>
+          }
         </div>
       </li>
 

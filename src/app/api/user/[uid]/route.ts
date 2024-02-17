@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, { params: { uid } }: Props) {
     });
 
     const alreadyExist = user?.friends.some((item) =>
-      uid === session?.user.id ? item.friendId === uid : item.userId === uid
+      uid !== session?.user.id ? item.friendId === uid : item.userId === uid
     );
 
     return NextResponse.json(
