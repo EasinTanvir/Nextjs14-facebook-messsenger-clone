@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { IoMdMenu } from "react-icons/io";
 import { ListItesm } from "@/utils/listItem";
@@ -58,9 +58,9 @@ const Navbar = () => {
             </TooltipProvider>
           ))}
         </ul>
-        <>
+        <Suspense fallback={<p>loading</p>}>
           <NavbarIcon />
-        </>
+        </Suspense>
       </nav>
     </header>
   );
