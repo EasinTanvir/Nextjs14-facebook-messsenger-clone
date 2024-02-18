@@ -50,7 +50,7 @@ const Register = () => {
       await axios.post("/api/auth/register", data);
 
       toast.success("Create user successful");
-      router.push("/auth/signin");
+      router.push("/api/auth/signin");
     } catch (err: any) {
       if (err.response.data.email) {
         setError("email", { message: err.response.data.email });
@@ -173,7 +173,7 @@ const Register = () => {
         <div className="text-center">
           <p>
             Already have an account?
-            <Link href="/auth/signin">
+            <Link href="/api/auth/signin">
               <span className="font-semibold">SignIn</span>
             </Link>
           </p>

@@ -35,7 +35,7 @@ const Navbar = () => {
 
         <ul
           className={`flex mid:flex-row flex-col  rounded-sm shadow-md  shadow-fuchsia-100 mid:static duration-200 absolute left-0  w-full ${
-            open ? "h-72 py-4" : "mid:h-fit h-0"
+            open ? "h-80 py-4" : "mid:h-fit h-0"
           }  mid:bg-white  bg-slate-600 top-16  flex-1  overflow-hidden   mid:justify-between `}
         >
           {ListItesm.map((item) => (

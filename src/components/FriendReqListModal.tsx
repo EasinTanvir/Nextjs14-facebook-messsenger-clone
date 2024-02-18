@@ -61,7 +61,7 @@ const FriendReqListModal = ({ open, userId, setOpen }: Props) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <div className="w-[450px] mt-20  relative h-72 p-4 rounded-md mx-auto bg-blue-950">
+      <div className="sm:w-[450px] w-[350px] mt-20  relative h-72 p-4 rounded-md mx-auto bg-blue-950">
         {alreadyFrien ? (
           <div className="flex justify-center">
             <p className="text-white mt-4 font-semibold">

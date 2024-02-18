@@ -22,18 +22,22 @@ const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [allMessage, setAllMessages] = useState<any>([]);
   const [message, setMessage] = useState<string>("");
+  const [loader, setLoader] = useState<boolean>(false);
+  console.log("loader = ", loader);
 
   const { data: session } = useSession();
 
   const fetchData = async () => {
-    setOpen(true);
+    setLoader(true);
 
     const result = await findAllMessageAction({ converId: converId });
 
     if (result.message) {
+      setLoader(false);
       setAllMessages(result.message);
     } else {
       toast.error(result.error);
+      setLoader(false);
     }
   };
 
@@ -81,7 +85,7 @@ const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
       }`}
     >
       <MessageNavbar open={open} setOpen={setOpen} />
-      <div className="flex flex-col h-[calc(100vh-168px)] overflow-y-auto ">
+      <div className="flex flex-col h-[calc(100vh-204px)] overflow-y-auto ">
         {allMessage.length > 0 &&
           allMessage.map((item: any, i: any) => (
             <div key={i} ref={scrollRef}>
@@ -93,7 +97,7 @@ const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
             </div>
           ))}
       </div>
-      <div className="h-9 border border-rose-700">
+      <div className="h-9 ">
         <div className="absolute bottom-0 w-full left-0">
           <form
             onSubmit={onSendMessageHandler}

@@ -1,10 +1,12 @@
 "use client";
 import { Avatar } from "@mui/material";
 import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+
+import { pusherClient } from "@/lib/pusher";
 
 const ChatUser = ({ setOpen, item }: { setOpen: any; item: any }) => {
   const { data: session } = useSession();
@@ -13,6 +15,7 @@ const ChatUser = ({ setOpen, item }: { setOpen: any; item: any }) => {
   const pathname = usePathname();
   const params = new URLSearchParams(searchParams);
 
+  const converId = searchParams.get("converId");
   const router = useRouter();
 
   const onClickHandler = () => {
@@ -52,7 +55,6 @@ const ChatUser = ({ setOpen, item }: { setOpen: any; item: any }) => {
               ? item.receiver?.userName
               : item.sender?.userName}
           </p>
-          {/* <p>hello</p> */}
         </div>
       </div>
     </React.Fragment>

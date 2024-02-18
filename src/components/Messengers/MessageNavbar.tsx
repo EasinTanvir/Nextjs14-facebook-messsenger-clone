@@ -54,7 +54,7 @@ const MessageNavbar = ({ open, setOpen }: { open: any; setOpen: any }) => {
           </>
         ) : (
           <p className="text-rose-700 font-semibold">
-            please select a conversation{" "}
+            Please select a conversation{" "}
           </p>
         )}
       </div>

@@ -15,7 +15,7 @@ import { IoIosLogIn } from "react-icons/io";
 import { IoIosNotifications } from "react-icons/io";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button, Tooltip } from "@mui/material";
 import { profileItems } from "@/utils/listItem";
 import React, { useEffect, useState } from "react";
@@ -29,11 +29,21 @@ const NavbarIcon = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [notification, setNotification] = useState([]);
+  const [unseenMessage, setUnseenMessage] = useState<any>([]);
   const { data: session, status } = useSession();
+  const searchParams = useSearchParams();
+  const converId = searchParams.get("converId");
 
   const logoutHandler = async () => {
     const data = await signOut({ redirect: false, callbackUrl: "/" });
     router.push(data.url);
+  };
+
+  const playAudio2 = () => {
+    const audioElement = new Audio("/audio/audio2.mp3");
+    audioElement.play().catch((error) => {
+      console.error("Error playing audio:", error);
+    });
   };
 
   useEffect(() => {
@@ -72,14 +82,54 @@ const NavbarIcon = () => {
     setUserId(id);
   };
 
+  const playAudio = () => {
+    const audioElement = new Audio("/audio/audio.mp3");
+    audioElement.play().catch((error) => {
+      console.error("Error playing audio:", error);
+    });
+  };
+
+  useEffect(() => {
+    const channel = pusherClient.subscribe(`${session?.user.id}`);
+    channel.bind("notify", function (data: any) {
+      //@ts-ignore
+
+      setUnseenMessage((prev) => [...prev, data]);
+    });
+
+    return () => {
+      pusherClient.unsubscribe(`${session?.user.id}`);
+    };
+  }, [session?.user.id, unseenMessage]);
+
+  useEffect(() => {
+    if (converId) {
+      setUnseenMessage([]);
+    }
+  }, [converId]);
+
+  useEffect(() => {
+    if (unseenMessage.length > 0 && !converId) {
+      playAudio();
+    }
+  }, [unseenMessage]);
+  useEffect(() => {
+    if (notification.length > 0) {
+      playAudio2();
+    }
+  }, [notification]);
+
   return (
     <div className="flex justify-end md:flex-1 w-36  sm:gap-2  items-center">
       {status === "authenticated" && (
         <Tooltip title="Start Chat With your friends">
           <Link href="/messenger">
             {" "}
-            <li className="cursor-pointer w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
+            <li className="cursor-pointer relative w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
               <FaFacebookMessenger size={27} />
+              <div className="w-5 h-5 absolute -right-2 -top-1 text-sm bg-rose-800 text-white rounded-full flex justify-center items-center">
+                {unseenMessage.length}
+              </div>
             </li>
           </Link>
         </Tooltip>
@@ -158,7 +208,7 @@ const NavbarIcon = () => {
       {status === "unauthenticated" && (
         <Tooltip title="Sign In to start Chat  with your friends">
           <Button
-            onClick={() => router.push("/auth/signin")}
+            onClick={() => router.push("/api/auth/signin")}
             variant="outlined"
             endIcon={<IoIosLogIn />}
           >

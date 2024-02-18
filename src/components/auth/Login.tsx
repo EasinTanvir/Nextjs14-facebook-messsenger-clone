@@ -87,7 +87,7 @@ const Login = () => {
         <div className="text-center">
           <p>
             Don&apos;t have an account?{" "}
-            <Link href="/auth/signup">
+            <Link href="/api/auth/signup">
               <span className="font-semibold">SignUp Now</span>
             </Link>
           </p>

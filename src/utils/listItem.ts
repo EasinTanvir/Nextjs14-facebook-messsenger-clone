@@ -10,9 +10,9 @@ import { MdEmojiEvents } from "react-icons/md";
 import { MdOutlineFeed } from "react-icons/md";
 export const ListItesm = [
   { id: 1, Icon: GoHome, label: "Home", href: "/" },
-  { id: 2, Icon: MdOndemandVideo, label: "Video", href: "/videos" },
-  { id: 3, Icon: FaLandmark, label: "Marketplace", href: "/marketplace" },
-  { id: 4, Icon: CgGames, label: "Games", href: "/games" },
+  { id: 1, Icon: FaUserFriends, label: "Friend", href: "/friends" },
+  { id: 2, Icon: MdOndemandVideo, label: "Video", href: "/" },
+  { id: 4, Icon: CgGames, label: "Games", href: "/" },
 ];
 export const SideBarItems = [
   { id: 1, Icon: FaUserFriends, label: "Friends" },
