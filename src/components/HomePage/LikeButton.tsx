@@ -26,7 +26,19 @@ const LikeButton = ({ like }: { like: any }) => {
       disabled={pending}
       className="font-semibold mt-1"
     >
-      <>{exist ? <BiSolidLike size={20} /> : <AiOutlineLike size={20} />}</>
+      {pending ? (
+        <Blocks
+          height="30"
+          width="25"
+          color="#4fa94d"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+          visible={true}
+        />
+      ) : (
+        <>{exist ? <BiSolidLike size={20} /> : <AiOutlineLike size={20} />}</>
+      )}
     </button>
   );
 };

@@ -5,14 +5,18 @@ import { getServerCredentials } from "../actions/sersverSession";
 import { revalidatePath } from "next/cache";
 import { pusherServer } from "@/lib/pusher";
 
-export const createLikeAction = async (formData: any) => {
+export const createLikeAction = async (
+  prevState: any,
+
+  formData: any
+) => {
   const session = await getServerCredentials();
   const postId = formData.get("postId");
   const userId = formData.get("userId");
 
   if (!session) {
     return {
-      errors: "Unauthorized access",
+      message: "Unauthorized access",
     };
   }
   const data = {
@@ -105,7 +109,7 @@ export const createLikeAction = async (formData: any) => {
     }
   } catch (err) {
     return {
-      error: "Something went wrong!",
+      message: "Something went wrong!",
     };
   }
 };

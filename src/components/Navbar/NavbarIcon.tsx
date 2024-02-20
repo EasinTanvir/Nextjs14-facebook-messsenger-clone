@@ -111,28 +111,26 @@ const NavbarIcon = () => {
 
   return (
     <div className="flex justify-end md:flex-1 w-36  sm:gap-2  items-center">
-      {status === "authenticated" && (
-        <Tooltip title="Start Chat With your friends">
-          <Link href="/messenger">
-            {" "}
-            <li className="cursor-pointer relative w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
-              <FaFacebookMessenger size={27} />
-              <div className="w-5 h-5 absolute -right-2 -top-1 text-sm bg-rose-800 text-white rounded-full flex justify-center items-center">
-                {unseenMessage.length}
-              </div>
-            </li>
-          </Link>
-        </Tooltip>
-      )}
+      <Tooltip title="Start Chat With your friends">
+        <Link href={session ? "/messenger" : "/api/auth/signin"}>
+          {" "}
+          <li className="cursor-pointer relative w-fit h-fit p-2 flex items-center justify-center transition rounded-full hover:bg-slate-300">
+            <FaFacebookMessenger size={25} />
+            <div className="w-5 h-5 absolute -right-2 -top-1 text-sm bg-rose-800 text-white rounded-full flex justify-center items-center">
+              {unseenMessage.length}
+            </div>
+          </li>
+        </Link>
+      </Tooltip>
 
       <li className="cursor-pointer w-fit h-fit p-0 flex items-center justify-center transition rounded-full hover:bg-slate-300">
         <div className="p-1 relative">
           <Menubar>
             <MenubarMenu>
               <MenubarTrigger className="cursor-pointer">
-                <IoIosNotifications size={27} />
+                <IoIosNotifications size={25} />
               </MenubarTrigger>
-              <MenubarContent className="px-6 py-4">
+              <MenubarContent className="px-6 py-4 max-h-60 overflow-y-auto">
                 <ul className="space-y-4">
                   {notification.length === 0 || status === "unauthenticated" ? (
                     <div className="h-10 flex justify-center items-center">
@@ -188,7 +186,7 @@ const NavbarIcon = () => {
           </Menubar>
 
           {
-            <div className="absolute -right-1 top-0 w-5 h-5 rounded-full bg-rose-900 text-white flex justify-center items-center">
+            <div className="absolute right-0 top-0 w-5 h-5 rounded-full bg-rose-900 text-white flex justify-center items-center">
               {status === "authenticated" ? notification.length : 0}
             </div>
           }
@@ -197,13 +195,12 @@ const NavbarIcon = () => {
 
       {status === "unauthenticated" && (
         <Tooltip title="Sign In to start Chat  with your friends">
-          <Button
+          <button
             onClick={() => router.push("/api/auth/signin")}
-            variant="outlined"
-            endIcon={<IoIosLogIn />}
+            className="bg-rose-700 text-white rounded-md py-1 px-3"
           >
             SignIn
-          </Button>
+          </button>
         </Tooltip>
       )}
 
@@ -235,9 +232,9 @@ const NavbarIcon = () => {
 
               <>
                 <MenubarSeparator />
-                <Link onClick={logoutHandler} href="/messenger">
+                <button onClick={logoutHandler}>
                   <MenubarItem>LogOut</MenubarItem>
-                </Link>
+                </button>
               </>
             </MenubarContent>
           </MenubarMenu>

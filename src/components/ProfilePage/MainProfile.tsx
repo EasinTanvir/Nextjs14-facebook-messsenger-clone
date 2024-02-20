@@ -5,9 +5,9 @@ import NewPost from "../HomePage/NewPost";
 import Card from "../HomePage/Card";
 import { getServerCredentials } from "../../../actions/sersverSession";
 
-const MainProfile = async ({ posts, user }: any) => {
+const MainProfile = async ({ posts, user, uid }: any) => {
   const session = await getServerCredentials();
-
+  console.log(user);
   return (
     <div className="flex-1 my-2">
       <div className="flex lg:flex-row justify-around flex-col gap-3 px-4 py-4   w-full">
@@ -45,7 +45,7 @@ const MainProfile = async ({ posts, user }: any) => {
         </div>
       </div>
       <div className="border flex flex-col gap-10 items-center flex-1 py-4">
-        {session && <NewPost />}
+        {session && uid === session.user.id && <NewPost />}
         {posts &&
           posts.length > 0 &&
           posts.map((item: any) => <Card key={item.id} {...item} />)}

@@ -12,7 +12,7 @@ const page = async ({ params: { uid } }: Props) => {
 
   return (
     <>
-      <ProfilePage posts={posts} user={user} />
+      <ProfilePage posts={posts} user={user} uid={uid} />
     </>
   );
 };
