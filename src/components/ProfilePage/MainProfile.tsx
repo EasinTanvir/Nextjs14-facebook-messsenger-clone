@@ -45,7 +45,7 @@ const MainProfile = async ({ posts, user }: any) => {
         </div>
       </div>
       <div className="border flex flex-col gap-10 items-center flex-1 py-4">
-        <NewPost />
+        {session && <NewPost />}
         {posts &&
           posts.length > 0 &&
           posts.map((item: any) => <Card key={item.id} {...item} />)}

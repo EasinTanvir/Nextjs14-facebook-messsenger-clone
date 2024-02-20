@@ -39,13 +39,6 @@ const NavbarIcon = () => {
     router.push(data.url);
   };
 
-  const playAudio2 = () => {
-    const audioElement = new Audio("/audio/audio2.mp3");
-    audioElement.play().catch((error) => {
-      console.error("Error playing audio:", error);
-    });
-  };
-
   useEffect(() => {
     const channel = pusherClient.subscribe(`${session?.user.id}`);
     channel.bind("message", function (data: any) {
@@ -113,11 +106,6 @@ const NavbarIcon = () => {
       playAudio();
     }
   }, [unseenMessage]);
-  useEffect(() => {
-    if (notification.length > 0) {
-      playAudio2();
-    }
-  }, [notification]);
 
   return (
     <div className="flex justify-end md:flex-1 w-36  sm:gap-2  items-center">

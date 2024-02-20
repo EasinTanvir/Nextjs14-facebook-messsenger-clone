@@ -4,7 +4,9 @@ import { useSession } from "next-auth/react";
 import { AiOutlineLike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+
 import toast from "react-hot-toast";
+import { Blocks } from "react-loader-spinner";
 
 const LikeButton = ({ like }: { like: any }) => {
   const router = useRouter();
@@ -15,7 +17,6 @@ const LikeButton = ({ like }: { like: any }) => {
 
   const clickHandler = () => {
     if (data?.user.id) return;
-
     toast.error("Please login to start like and comment");
   };
 

@@ -43,7 +43,7 @@ export const fetchMyPost = async (id: string) => {
       });
     } else {
       posts = await prisma.posts.findMany({
-        where: { userId: id, mode: "PRIVATE" },
+        where: { userId: id, mode: "PUBLIC" },
         include: {
           user: true,
           like: true,
@@ -56,9 +56,6 @@ export const fetchMyPost = async (id: string) => {
       });
     }
 
-    if (!posts || posts.length === 0) {
-      notFound();
-    }
     return posts;
   } catch (err) {
     throw new Error("Something went wrong! Fetch individual posts failed");
