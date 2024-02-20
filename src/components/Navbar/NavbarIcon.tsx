@@ -107,6 +107,8 @@ const NavbarIcon = () => {
     }
   }, [unseenMessage]);
 
+  console.log(notification);
+
   return (
     <div className="flex justify-end md:flex-1 w-36  sm:gap-2  items-center">
       {status === "authenticated" && (
@@ -154,8 +156,8 @@ const NavbarIcon = () => {
                               <span className="text-sm">
                                 <span>{item?.message}</span>
                                 {item?.message ===
-                                  "has sent you a friend req" ||
-                                "has accepted friend req" ? (
+                                ("has sent you a friend req" ||
+                                  "has accepted friend req") ? (
                                   <button
                                     onClick={() =>
                                       onFriendModalHandler(item?.userId)
