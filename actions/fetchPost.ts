@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "../prismaClient";
 import { getServerCredentials } from "./sersverSession";
+import { revalidatePath } from "next/cache";
 
 export const fetchPost = async () => {
   try {
@@ -119,6 +120,7 @@ export const fetchPostbyId = async (id: string) => {
     if (!post) {
       notFound();
     }
+    revalidatePath("/");
     return post;
   } catch (err) {
     throw new Error("Something went wrong! Fetch posts failed");

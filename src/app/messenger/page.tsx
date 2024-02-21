@@ -1,8 +1,9 @@
 import Messengers from "@/components/Messengers";
-import React from "react";
+import React, { Suspense } from "react";
 import { fetchConversation } from "../../../actions/fetchConversation";
 import { getServerCredentials } from "../../../actions/sersverSession";
 import { redirect } from "next/navigation";
+import { SkeletonCard } from "@/components/Extra";
 
 const page = async () => {
   const session = await getServerCredentials();
@@ -11,7 +12,11 @@ const page = async () => {
   }
   const conver = await fetchConversation();
 
-  return <Messengers conver={conver} />;
+  return (
+    <Suspense fallback={<SkeletonCard />}>
+      <Messengers conver={conver} />
+    </Suspense>
+  );
 };
 
 export default page;

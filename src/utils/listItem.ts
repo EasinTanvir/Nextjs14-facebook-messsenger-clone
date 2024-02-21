@@ -16,7 +16,6 @@ export const ListItesm = [
 ];
 export const SideBarItems = [
   { id: 1, Icon: FaUserFriends, label: "Friends" },
-  { id: 1, Icon: FaUserFriends, label: "Friend Request" },
   { id: 2, Icon: RiMemoriesLine, label: "Memories" },
   { id: 3, Icon: MdGroups, label: "Groups" },
   { id: 4, Icon: LiaVideoSolid, label: "Videos" },

@@ -4,11 +4,11 @@ import Post from "./Post";
 import RightSideBar from "./RightSideBar";
 import SignlePost from "./SignlePost";
 
-const HomePage = ({ posts, single = false }: any) => {
+const HomePage = ({ pid, single = false }: any) => {
   return (
     <div className="flex justify-between relative">
       <SideBar />
-      {single ? <SignlePost post={posts} /> : <Post posts={posts} />}
+      {single ? <SignlePost pid={pid} /> : <Post />}
 
       <RightSideBar />
     </div>

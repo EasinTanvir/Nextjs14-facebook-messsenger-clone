@@ -30,6 +30,7 @@ const Card = async ({
     message: null,
   });
   const { data: session, status } = useSession();
+  const exist = like?.some((item: any) => item.userId === session?.user.id);
 
   useEffect(() => {
     if (state && state.message === "you dislike this post") {
@@ -79,7 +80,7 @@ const Card = async ({
             <input name="postId" type="hidden" value={id} />
             <input name="userId" type="hidden" value={userId} />
 
-            <LikeButton like={like} />
+            <LikeButton exist={exist} />
           </form>
 
           <span className="font-semibold">{like?.length}</span>

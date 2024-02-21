@@ -11,6 +11,7 @@ import { createNewMessageAction } from "../../../serverAction/createNewMessageAc
 import { pusherClient } from "@/lib/pusher";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { SkeletonCard } from "../Extra";
 
 const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
   const searchParams = useSearchParams();
@@ -85,44 +86,52 @@ const MessengerChatBox = ({ open, setOpen }: { open: any; setOpen: any }) => {
       }`}
     >
       <MessageNavbar open={open} setOpen={setOpen} />
-      <div className="flex flex-col h-[calc(100vh-204px)] overflow-y-auto ">
-        {allMessage.length > 0 &&
-          allMessage.map((item: any, i: any) => (
-            <div key={i} ref={scrollRef}>
-              {item.senderId === session?.user.id ? (
-                <Sender item={item} />
-              ) : (
-                <Receiver item={item} />
-              )}
-            </div>
-          ))}
-      </div>
-      <div className="h-9 ">
-        <div className="absolute bottom-0 w-full left-0">
-          <form
-            onSubmit={onSendMessageHandler}
-            className="flex flex-row justify-between  relative  "
-          >
-            <input
-              disabled={!converId}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              type="text"
-              name=""
-              placeholder="type your message"
-              id=""
-              className="border border-slate-600 py-2 w-full px-2 rounded-md outline-none"
-            />
-            <button
-              disabled={!converId}
-              type="submit"
-              className="absolute right-2 top-0 bottom-0 m-auto"
-            >
-              <IoMdSend size={24} />
-            </button>
-          </form>
+      {loader ? (
+        <div className="flex justify-center items-center mt-10">
+          <SkeletonCard />
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="flex flex-col h-[calc(100vh-204px)] overflow-y-auto ">
+            {allMessage.length > 0 &&
+              allMessage.map((item: any, i: any) => (
+                <div key={i} ref={scrollRef}>
+                  {item.senderId === session?.user.id ? (
+                    <Sender item={item} />
+                  ) : (
+                    <Receiver item={item} />
+                  )}
+                </div>
+              ))}
+          </div>
+          <div className="h-9 ">
+            <div className="absolute bottom-0 w-full left-0">
+              <form
+                onSubmit={onSendMessageHandler}
+                className="flex flex-row justify-between  relative  "
+              >
+                <input
+                  disabled={!converId}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  type="text"
+                  name=""
+                  placeholder="type your message"
+                  id=""
+                  className="border border-slate-600 py-2 w-full px-2 rounded-md outline-none"
+                />
+                <button
+                  disabled={!converId}
+                  type="submit"
+                  className="absolute right-2 top-0 bottom-0 m-auto"
+                >
+                  <IoMdSend size={24} />
+                </button>
+              </form>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

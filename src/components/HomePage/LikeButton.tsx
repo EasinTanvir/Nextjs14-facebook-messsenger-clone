@@ -8,10 +8,9 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Blocks } from "react-loader-spinner";
 
-const LikeButton = ({ like }: { like: any }) => {
+const LikeButton = ({ exist }: { exist: any }) => {
   const router = useRouter();
   const { data } = useSession();
-  const exist = like?.some((item: any) => item.userId === data?.user.id);
 
   const { pending, action } = useFormStatus();
 
