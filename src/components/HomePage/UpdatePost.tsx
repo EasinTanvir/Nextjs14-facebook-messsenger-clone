@@ -6,6 +6,7 @@ import { createLikeAction } from "../../../serverAction/likePost";
 import LikeButton from "./LikeButton";
 import CommentCart from "./CommentCart";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 const UpdatePost = ({
   id,
   like,
@@ -18,16 +19,18 @@ const UpdatePost = ({
   userId: any;
 }) => {
   const [openComment, setOpentComment] = useState(false);
+  const { data: session, status } = useSession();
 
   const [viewMore, setViewMore] = useState<boolean>(false);
   const firstComment = comment?.slice(0, 2);
 
   return (
     <>
-      <>
-        <AddNewComment id={id} userId={userId} />
-      </>
-
+      {session && (
+        <>
+          <AddNewComment id={id} userId={userId} />
+        </>
+      )}
       {comment?.length > 0 && (
         <div className="mt-3 my-4 space-y-3 max-h-40  overflow-y-auto ">
           {viewMore ? (

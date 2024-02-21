@@ -91,9 +91,7 @@ const Card = async ({
         </div>
       </div>
 
-      {session && (
-        <UpdatePost id={id} like={like} comment={comment} userId={userId} />
-      )}
+      <UpdatePost id={id} like={like} comment={comment} userId={userId} />
     </div>
   );
 };

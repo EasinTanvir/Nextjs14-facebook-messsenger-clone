@@ -3,6 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import moment from "moment";
 import ReplyCart from "./ReplyCart";
 import AddNewReply from "./AddNewReply";
+import { useSession } from "next-auth/react";
 
 const CommentCart = ({
   item,
@@ -13,6 +14,7 @@ const CommentCart = ({
   userId: any;
   postId: any;
 }) => {
+  const { data: session, status } = useSession();
   const [replyBox, setReplyBox] = useState(false);
 
   return (
@@ -30,12 +32,14 @@ const CommentCart = ({
             </span>
           </div>
           <h3 className="text-sm">{item.comment}</h3>
-          <button
-            onClick={() => setReplyBox(true)}
-            className="font-semibold text-sm"
-          >
-            reply
-          </button>
+          {session && (
+            <button
+              onClick={() => setReplyBox(true)}
+              className="font-semibold text-sm"
+            >
+              reply
+            </button>
+          )}
         </div>
       </div>
 
